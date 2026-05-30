@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bayerische Jägerprüfung – Mündliche Prüfung</title>
+<style>
+:root {
+  --forest: #1e3a0f;
+  --leaf: #3a6b22;
+  --leaf-light: #4e8c30;
+  --bark: #7a5c1e;
+  --moss: #c8d96f;
+  --paper: #faf8f2;
+  --card: #ffffff;
+  --ink: #1e1a0f;
+  --muted: #6b6050;
+  --ai-color: #1a5f7a;
+  --ai-bg: #eaf5fa;
+  --border: #ddd5c0;
+  --shadow: 0 2px 8px rgba(0,0,0,0.10);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.14);
+  --radius: 8px;
+  --correct: #2d7a2d;
+  --wrong: #8b1a1a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Georgia', serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--forest);
+  color: #fff;
+  padding: 0 1.5rem;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0 0.5rem;
+}
+
+.header-top h1 {
+  font-size: 1.35rem;
+  font-weight: normal;
+  letter-spacing: 0.02em;
+}
+
+.header-top h1 small {
+  display: block;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  font-family: sans-serif;
+  letter-spacing: 0;
+}
+
+.mode-btn {
+  margin-left: auto;
+  background: var(--leaf);
+  color: #fff;
+  border: none;
+  padding: 0.45rem 1.1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-family: sans-serif;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.mode-btn:hover { background: var(--leaf-light); }
+.mode-btn.active { background: var(--bark); }
+
+/* ── CATEGORY TABS ── */
+.cat-tabs {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  margin-top: 0.5rem;
+}
+.cat-tabs::-webkit-scrollbar { display: none; }
+
+.cat-tab {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.65);
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  font-family: sans-serif;
+  font-size: 0.82rem;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.cat-tab:hover { color: rgba(255,255,255,0.9); }
+
+.cat-tab.active {
+  color: #fff;
+  border-bottom-color: var(--moss);
+}
+
+/* ── QUIZ CATEGORY FILTER ── */
+.quiz-filter {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-family: sans-serif;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.quiz-filter label { font-weight: bold; }
+.quiz-filter select {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.3rem 0.5rem;
+  background: white;
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+
+/* ── MAIN LAYOUT ── */
+main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+/* ── CATEGORY DESCRIPTION ── */
+.cat-description {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--leaf);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.cat-description h2 {
+  font-size: 1.15rem;
+  color: var(--forest);
+  margin-bottom: 0.4rem;
+}
+
+.cat-description p {
+  font-size: 0.92rem;
+  color: var(--muted);
+  font-family: sans-serif;
+}
+
+/* ── STUDY MODE: QUESTION LIST ── */
+.questions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.questions-header h3 {
+  font-size: 1rem;
+  color: var(--muted);
+  font-weight: normal;
+  font-family: sans-serif;
+}
+
+.expand-all-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.25rem 0.8rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: var(--muted);
+  font-family: sans-serif;
+}
+.expand-all-btn:hover { background: var(--border); }
+
+.question-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 0.6rem;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.question-toggle {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  font-family: 'Georgia', serif;
+  font-size: 0.95rem;
+  color: var(--ink);
+  transition: background 0.15s;
+}
+
+.question-toggle:hover { background: #f5f2ea; }
+
+.q-number {
+  font-family: sans-serif;
+  font-size: 0.75rem;
+  color: var(--muted);
+  min-width: 2em;
+  margin-top: 0.15em;
+}
+
+.q-text { flex: 1; }
+
+.q-chevron {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 0.15em;
+  transition: transform 0.2s;
+}
+
+.question-item.open .q-chevron { transform: rotate(90deg); }
+
+.answer-panel {
+  display: none;
+  padding: 0 1rem 1rem 2.9rem;
+  font-size: 0.92rem;
+}
+
+.question-item.open .answer-panel { display: block; }
+
+.answer-text {
+  background: #f5f2ea;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  white-space: pre-wrap;
+  font-family: sans-serif;
+  line-height: 1.6;
+}
+
+.ai-badge {
+  display: inline-block;
+  background: var(--ai-bg);
+  color: var(--ai-color);
+  border: 1px solid #aadaee;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-family: sans-serif;
+  padding: 0.1em 0.5em;
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+}
+
+.source-note {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-family: sans-serif;
+  margin-top: 0.4rem;
+}
+
+/* ── QUIZ MODE ── */
+#quiz-mode { display: none; }
+#quiz-mode.active { display: block; }
+#study-mode.hidden { display: none; }
+
+.quiz-progress {
+  font-family: sans-serif;
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--leaf);
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+.quiz-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 2rem 1.5rem 1.5rem;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+}
+
+.quiz-cat-label {
+  font-family: sans-serif;
+  font-size: 0.75rem;
+  color: var(--leaf);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.8rem;
+  font-weight: bold;
+}
+
+.quiz-question {
+  font-size: 1.15rem;
+  flex: 1;
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+
+.quiz-answer {
+  background: #f0f7ea;
+  border: 1px solid #b8d9a0;
+  border-radius: 6px;
+  padding: 1rem 1.1rem;
+  font-family: sans-serif;
+  font-size: 0.92rem;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.quiz-answer.visible { display: block; }
+
+.quiz-ai-note {
+  font-size: 0.75rem;
+  color: var(--ai-color);
+  font-style: italic;
+  margin-top: 0.4rem;
+}
+
+.quiz-controls {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 0.55rem 1.2rem;
+  cursor: pointer;
+  font-family: sans-serif;
+  font-size: 0.88rem;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.btn:disabled { opacity: 0.35; cursor: default; }
+
+.btn-primary { background: var(--leaf); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--leaf-light); }
+
+.btn-secondary { background: var(--border); color: var(--ink); }
+.btn-secondary:hover:not(:disabled) { background: #ccc8b8; }
+
+.btn-outline {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.btn-outline:hover:not(:disabled) { background: var(--border); }
+
+.quiz-shuffle {
+  margin-left: auto;
+  font-size: 0.8rem;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: var(--muted);
+  font-family: sans-serif;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .header-top h1 { font-size: 1.1rem; }
+  .quiz-card { padding: 1.2rem 1rem 1rem; }
+  .quiz-question { font-size: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <h1>Bayerische Jägerprüfung
+      <small>Lernhilfe – Mündliche Prüfung</small>
+    </h1>
+    <button class="mode-btn" id="mode-toggle-btn" onclick="toggleMode()">
+      Quiz-Modus
+    </button>
+  </div>
+  <nav class="cat-tabs" id="cat-tabs"></nav>
+</header>
+
+<main>
+  <!-- STUDY MODE -->
+  <div id="study-mode">
+    <div class="cat-description" id="cat-desc"></div>
+    <div class="questions-header">
+      <h3 id="q-count-label"></h3>
+      <button class="expand-all-btn" onclick="expandAll()">Alle aufklappen</button>
+    </div>
+    <div id="question-list"></div>
+  </div>
+
+  <!-- QUIZ MODE -->
+  <div id="quiz-mode">
+    <div class="quiz-filter">
+      <label>Kategorie:</label>
+      <select id="quiz-cat-select" onchange="initQuiz()">
+        <option value="all">Alle Kategorien</option>
+      </select>
+    </div>
+    <div class="quiz-progress">
+      <span id="quiz-prog-label">Frage 1 von 1</span>
+      <div class="progress-bar"><div class="progress-fill" id="quiz-prog-bar"></div></div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-cat-label" id="quiz-cat-label"></div>
+      <div class="quiz-question" id="quiz-question">—</div>
+      <div class="quiz-answer" id="quiz-answer">
+        <span id="quiz-answer-text"></span>
+        <div class="quiz-ai-note" id="quiz-ai-note" style="display:none">
+          ⚠ Diese Antwort wurde durch KI ergänzt und sollte mit Fachliteratur verifiziert werden.
+        </div>
+      </div>
+      <div class="quiz-controls">
+        <button class="btn btn-primary" id="reveal-btn" onclick="revealAnswer()">Antwort anzeigen</button>
+        <button class="btn btn-secondary" id="next-btn" onclick="nextQuestion()" style="display:none">Nächste Frage →</button>
+        <button class="btn btn-outline" id="prev-btn" onclick="prevQuestion()" disabled>← Zurück</button>
+        <button class="btn btn-outline quiz-shuffle" onclick="shuffleQuiz()">🔀 Mischen</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  EXAM DATA
+// ═══════════════════════════════════════════════════
+const EXAM_DATA = {
+  categories: [
+    // ───────────────────────────────────────────────
+    {
+      id: "waffen",
+      number: 1,
+      title: "Waffen und Waffenrecht",
+      description: "Auf dem Prüfungstisch liegen typischerweise mehrere Waffen: Repetierer (z.B. Mauser 98 oder K98), Drilling, Bockflinte, Revolver und Pistole (z.B. Walther PPK), dazu verschiedene Patronen und oft ein Zielfernrohr. Der Prüfer fragt nach Identifikation und Zustandsbeschreibung der Waffen (Verschluss, Sicherung, Stecher, gespannt/entsichert/geladen), nach Munitionstypen und Gefährdungsbereichen sowie nach Grundlagen des Waffengesetzes (Kauf, Aufbewahrung, WBK).",
+      questions: [
+        {
+          q: "Was ist eine Schusswaffe?",
+          a: "Eine Schusswaffe ist eine Waffe, bei der Geschosse oder andere Stoffe durch einen Lauf getrieben werden. Der Antrieb kann mechanisch, chemisch oder physikalisch sein.",
+          ai: false
+        },
+        {
+          q: "Was ist eine Feuerwaffe?",
+          a: "Eine Feuerwaffe ist eine Schusswaffe, bei der das Geschoss durch heiße Gase (Verbrennung von Treibladung) durch den Lauf getrieben wird. Beispiele: Büchse, Flinte, Pistole.",
+          ai: false
+        },
+        {
+          q: "Was sind kalte/blanke Waffen? Nenne drei Beispiele.",
+          a: "Kalte Waffen sind Hieb-, Stich- und Stoßwaffen, die durch Muskelkraft angetrieben werden.\nBeispiele: Hirschfänger, Jagdnicker, Saufeder.\nSie werden zum Abfangen von gestelltem oder krankem Wild und zum Aufbrechen verwendet.",
+          ai: false
+        },
+        {
+          q: "Was sind Langwaffen und Kurzwaffen?",
+          a: "Langwaffen: Gewehre mit Lauflänge über 30 cm und Gesamtlänge über 60 cm (z.B. Büchsen, Flinten, Drilling).\nKurzwaffen: Pistolen und Revolver mit kürzeren Maßen.",
+          ai: false
+        },
+        {
+          q: "Was ist ein Drilling und woran erkennt man ihn?",
+          a: "Ein Drilling ist eine Jagdwaffe mit drei Läufen: zwei Flintenläufen (oben/seitlich) und einem Büchsenlauf (unten/mittig). Man erkennt ihn an den drei Läufen, dem Umschaltschieber für den Büchsenlauf und dem typischen Kippverschluss. Er ermöglicht sowohl Schrot- als auch Büchsenjagd mit einer Waffe.",
+          ai: false
+        },
+        {
+          q: "Was sind Signalstifte und was zeigen sie an?",
+          a: "Signalstifte sind kleine Metallstifte am Verschluss einer Waffe, die herausragen, wenn der Schlagbolzen gespannt ist. Sie ermöglichen eine sichere taktile Kontrolle des Spannzustands, auch ohne hinzuschauen.",
+          ai: false
+        },
+        {
+          q: "Was ist ein Stecher? Welche Arten gibt es und wie steche ich ein/aus?",
+          a: "Ein Stecher reduziert den Abzugswiderstand für einen präzisen Schuss.\n- Rückstecher (Drilling): vorderen Abzug nach vorne drücken, dann löst der hintere mit minimalem Druck aus.\n- Doppelzüngelstecher (98er): Zügel vorwärts drücken.\n- Französischer Stecher: separater Stecher-Zügel.\nEntstechen: leer abdrücken (in sicherer Richtung) oder bei Kippläufen durch Öffnen.",
+          ai: false
+        },
+        {
+          q: "Was ist der Unterschied zwischen Büchsenläufen und Flintenläufen?",
+          a: "Büchsenläufe sind gezogen (haben Züge und Felder), die dem Geschoss einen Drall verleihen und damit die Präzision erhöhen.\nFlintenläufe sind glatt (keine Züge), geeignet für Schrot und Flintenlaufgeschosse.",
+          ai: false
+        },
+        {
+          q: "Was bedeutet die Kaliberangabe z.B. 7×65R oder 8×57IS?",
+          a: "Die erste Zahl bezeichnet den Geschossdurchmesser in mm (z.B. 7 mm).\nDie zweite Zahl bezeichnet die Hülsenlänge in mm (z.B. 65 mm).\nBuchstaben: R = Rand (für Kipplaufwaffen), S = Spitzgeschoss, IS = Einheitsgeschoss-Spitz.",
+          ai: false
+        },
+        {
+          q: "Was bedeutet das 'R' beim Kaliber (z.B. 7×65R)? Für welche Waffe wird es verwendet?",
+          a: "Das 'R' steht für 'Rand' – die Hülse hat einen vorstehenden Rand am Boden. Dieser Rand dient als Anschlag im Patronenlager von Kipplaufwaffen (Drilling, Bockdoppelbüchse). Randlose Patronen werden in Repetierwaffen verwendet.",
+          ai: false
+        },
+        {
+          q: "Was ist der Unterschied zwischen Randpatrone, randloser Patrone und Patrone mit Rille?",
+          a: "Randpatrone: hat vorstehenden Rand, für Kipplaufwaffen (Drilling).\nRandlose Patrone: für Repetierwaffen (z.B. Mauser 98, K98).\nPatrone mit Rille (Halbrand/Rillenpatrone): z.B. für Selbstladepistolen wie die Walther PPK – die Rille dient dem Auszieherhaken.",
+          ai: false
+        },
+        {
+          q: "Was ist eine Schrotpatrone? Welche Kaliber gibt es und wie groß ist der Gefährdungsbereich?",
+          a: "Eine Schrotpatrone enthält viele kleine Bleikügelchen (Schrotkörner). Kaliber z.B. 12/70 (12 = Gauge-Angabe, 70 = Hülsenlänge in mm).\nGefährdungsbereich: Schrotstärke in mm × 100 = Meter (z.B. 3 mm → 300 m).",
+          ai: false
+        },
+        {
+          q: "Was ist ein Flintenlaufgeschoss (FLG)? Wofür wird es eingesetzt und wie groß ist der Gefährdungsbereich?",
+          a: "Ein FLG ist ein Einzelgeschoss für Flinten. Es hat Rillen, die das Verformen beim Durchqueren des Chokes ermöglichen. Wofür: Schalenwild bei Gesellschaftsjagden und als Fangschuss. Gefährdungsbereich: ca. 1.500 m.",
+          ai: false
+        },
+        {
+          q: "Wie groß ist der Gefährdungsbereich von Büchsenmunition?",
+          a: "Büchsenmunition hat einen Gefährdungsbereich von bis zu 5.000 m. Daher ist ein sicherer Kugelfang vor jedem Schuss zwingend zu prüfen.",
+          ai: false
+        },
+        {
+          q: "Darf man aus einer Waffe ohne Lilienzeichen Stahlschrot verschießen?",
+          a: "Nein. Das Lilienzeichen (Nitrobeschusszeichen) bestätigt die Zulassung für Stahlschrot (verstärkte Beschussprüfung). Ohne dieses Zeichen darf nur Bleischrot verwendet werden, da Stahlschrot härtere Beanspruchung verursacht und die Waffe beschädigen könnte.",
+          ai: false
+        },
+        {
+          q: "Was ist der Choke und wozu dient er?",
+          a: "Der Choke ist eine Verengung am Ende des Flintenlaufes (Mündung). Er beeinflusst den Streukreis der Schrotkörner: enger Choke = geringere Streuung (für weite Distanzen), weiter Choke = größere Streuung (für kurze Distanzen).",
+          ai: false
+        },
+        {
+          q: "Was sagt die Zielfernrohrbezeichnung z.B. 8×58 aus?",
+          a: "8 = achtfache Vergrößerung.\n58 = Objektivdurchmesser in mm.\nDaraus ergibt sich die Austrittspupille: 58 ÷ 8 = 7,25 mm – je größer, desto besser bei schwachem Licht.",
+          ai: false
+        },
+        {
+          q: "Was ist die Austrittspupille und wie wird sie berechnet?",
+          a: "Die Austrittspupille ist der Lichtkreis, der aus dem Okular des Zielfernrohrs austritt. Berechnung: Objektivdurchmesser ÷ Vergrößerung. Beispiel: 8×58 → 58 ÷ 8 = 7,25 mm. Eine größere Austrittspupille ermöglicht bessere Sicht bei Dämmerung.",
+          ai: false
+        },
+        {
+          q: "Was ist der Unterschied zwischen Absehen 1 und Absehen 4?",
+          a: "Absehen 1: Fadenkreuz mit Zielstachel – der feine Punkt ist bei schlechtem Licht besser sichtbar.\nAbsehen 4: Mil-dot- oder Balkensystem mit eingebauter Entfernungsschätzung (z.B. Rehbock auf 100 m).",
+          ai: false
+        },
+        {
+          q: "Wie viele Patronen darf ich auf der Jagd ins Magazin laden?",
+          a: "Bei Büchsen gilt in Bayern: 2 Patronen im Magazin + 1 im Patronenlager = 3 insgesamt. Bei Flinten auf Schalenwild: max. 2. Die genauen Regelungen können je nach Jagdart (Gesellschaftsjagd) und Landesrecht variieren.",
+          ai: true
+        },
+        {
+          q: "Was sind wesentliche Teile einer Waffe? (am Beispiel Walther PPK)",
+          a: "Lauf, Verschluss (Schlitten), Magazin, Patronenlager, Abzug, Schlagbolzen/Hahn, Sicherung. Wesentliche Teile im Sinne des WaffG sind u.a. Lauf und Verschluss, da sie die Funktion der Waffe bestimmen.",
+          ai: false
+        },
+        {
+          q: "Was ist GEE (auf einer Munitionspackung)?",
+          a: "GEE steht für 'Gesamt-Einsatz-Energie' und bezeichnet die Auftreffenergie des Geschosses in Joule. Sie ist ein Maß für die Wirkung auf das Wild und relevant für die jagdliche Eignung (z.B. Mindestenergie für bestimmtes Schalenwild).",
+          ai: true
+        },
+        {
+          q: "Wie sind Waffen zuhause aufzubewahren?",
+          a: "In einem Waffenschrank mindestens der Klasse 0 (bis 10 Langwaffen) oder Klasse 1. Schlüssel und Code dürfen nur dem Besitzer zugänglich sein. Munition kann getrennt oder im gleichen Schrank aufbewahrt werden.",
+          ai: false
+        },
+        {
+          q: "Was muss ich nach dem Kauf einer Waffe auf den Jagdschein tun?",
+          a: "Innerhalb von zwei Wochen muss eine Waffenbesitzkarte (WBK) beim zuständigen Landratsamt beantragt werden. Die Waffe darf bis zur Ausstellung der WBK auf den Jagdschein geführt werden.",
+          ai: false
+        },
+        {
+          q: "Wie beschreibe ich den Zustand einer Walther PPK?",
+          a: "Folgendes prüfen und benennen:\n1. Ist der Hahn gespannt (zurück) oder entspannt (vorn)?\n2. Ragt der Signalstift heraus (= gespannt)?\n3. Ist die Sicherung sichtbar eingelegt?\n4. Steckt ein Magazin?\n5. Ist das Patronenlager geladen?\nEin gespannter Hahn ohne sichtbare Sicherung = NICHT gesichert.",
+          ai: false
+        },
+        {
+          q: "Was ist der Unterschied zwischen Double Action und Single Action beim Revolver?",
+          a: "Single Action (SA): Hahn wird manuell gespannt, danach leichter Abzug.\nDouble Action (DA): Durch Durchziehen des Abzugs wird der Hahn gespannt und ausgelöst in einem Zug – schwerer Abzug, schnellere Folgeschüsse.",
+          ai: false
+        }
+      ]
+    },
+    // ───────────────────────────────────────────────
+    {
+      id: "wildbiologie",
+      number: 2,
+      title: "Wildbiologie",
+      description: "Auf dem Tisch liegen verschiedene Schädel (Rehwild, Rotwild, Gamswild, Schwarzwild, Fuchs, Dachs), Vorderläufe und Losungen. An der Wand hängen Präparate (Vögel, Säuger). Gefragt wird nach Tierarterkennung, Alters- und Geschlechtsbestimmung, Lebensweise, Fortpflanzungszeiten (Brunft, Satzzeit), sowie Unterscheidungsmerkmalen ähnlicher Arten.",
+      questions: [
+        {
+          q: "Wie bestimmt man das Alter eines Rehbocks anhand des Gehörns?",
+          a: "Bockkitz (0–1 Jahr): Spieße ohne Rosen, Erstlingsgeweih, Rosenstöcke kaum entwickelt.\nJähling/1–2 Jahre: Spieße mit kleinen Rosen, Rosenstöcke niedrig.\n2–3 Jahre: Sechser mit Rosen, Rosenstöcke ca. 1–2 cm.\nÄltere Böcke: Rosenstöcke höher, Rosen breiter, Geweih stärker und älter.",
+          ai: false
+        },
+        {
+          q: "Was ist die Lebensweise des Rehwildes?",
+          a: "Sommer: Einzelgänger, territorial – Böcke markieren ihr Revier.\nWinter: bilden Notgemeinschaften auf günstigen Äsungsflächen.\nNahrung: Konzentratselektierer (suchen energie- und nährstoffreiche Knospen, Früchte, Kräuter).\nSystem: Wiederkäuer mit 4-kammerigem Magen.",
+          ai: false
+        },
+        {
+          q: "Was sind Bruchzeit und Schmalzeit beim Rehwild?",
+          a: "Brunft: Mitte Juli bis Mitte August (Hauptbrunft).\nSatzzeit: Mai/Juni (Kitz wird gesetzt).\nFegezeit: April–Juni (Bock verfegt Bast).\nAbwurf: Oktober–Dezember.",
+          ai: false
+        },
+        {
+          q: "Was bedeutet 'Konzentratselektierer'?",
+          a: "Rehe sind Konzentratselektierer: Sie wählen sehr selektiv energie- und eiweißreiche Nahrung (Knospen, Pilze, Beeren, Kräuter, Blätter). Im Gegensatz zu Raufutterfressern (Rotwild, Gams) können sie kein strukturreiches, zellulosereiches Grobfutter effizient verdauen.",
+          ai: false
+        },
+        {
+          q: "Wie bestimmt man Alter und Geschlecht beim Schwarzwild?",
+          a: "Geschlecht:\n- Keiler: Grandeln/Hauer (Eckzähne), Keilerfurche über den Hadern, Präputialfalte (Pinsel) sichtbar.\n- Bache: keine markante Furche, rundere Silhouette.\n\nAlter am Gebiss:\n- Frischling: M1 vorhanden, M2 bricht durch.\n- Überläufer: M1–M3 vorhanden, P noch im Wechsel.\n- Adulte: vollständiges Dauergebiss.",
+          ai: false
+        },
+        {
+          q: "Wie ist eine Schwarzwild-Rotte aufgebaut?",
+          a: "Leitbache mit ihren Frischlingen bilden den Kern.\nÄltere Bachen mit ihren diesjährigen Frischlingen schließen sich an.\nÜberläufer bleiben oft noch bei der Rotte.\nKümmern Keiler meist solitär.",
+          ai: false
+        },
+        {
+          q: "Wie lang ist die Tragzeit beim Schwarzwild?",
+          a: "3 Monate, 3 Wochen, 3 Tage (ca. 113–115 Tage). Die Bache baut ca. 3 Wochen vor dem Setzen einen Wurfkessel und zieht sich darin zurück.",
+          ai: false
+        },
+        {
+          q: "Wie unterscheidet man Gamsbock und Gamsgeiß?",
+          a: "Krickeln beider Geschlechter ähnlich, aber:\n- Bock: kräftigere, stärker nach hinten gebogene Krickeln, Hakelung (Umbiegen der Spitze) ausgeprägter.\n- Geiß: schlankere, weniger stark gebogene Krickeln.\nZusätzlich: Bock hat im Herbst aufgestellte Rückenmähne und riecht stärker (Brunft).",
+          ai: false
+        },
+        {
+          q: "Wann brunftet das Gamswild?",
+          a: "Gamsbrunft: November bis Dezember.\nSatzzeit: Mai/Juni (1 Kitz, selten Zwillinge).\nTragezeit: ca. 170 Tage.",
+          ai: false
+        },
+        {
+          q: "Wann ranzt der Fuchs? Wie setzt er seine Jungen?",
+          a: "Ranzzeit: Januar bis Februar.\nWurfgröße: 4–6 Welpen.\nWelpen werden im Bau (Erdbau, oft ausgehobener Dachsbau) geboren, blind und hilflos.\nAugen öffnen sich nach ca. 2 Wochen.",
+          ai: false
+        },
+        {
+          q: "Wie unterscheidet man Dachs- und Fuchsschädel?",
+          a: "Dachsschädel: Sagittalkamm (Knochenkamm auf der Schädelmitte), Unterkiefer fest mit dem Schädel verbunden (bleibt beim Toten am Schädel), breiter und robuster.\nFuchsschädel: kein Sagittalkamm, Unterkiefer löst sich ab, schmaler und spitzer.",
+          ai: false
+        },
+        {
+          q: "Wann ranzt der Dachs?",
+          a: "Der Dachs ranzt im Sommer (Juli–August), aber es gibt eine verzögerte Einnistung – die eigentliche Schwangerschaft beginnt erst im Winter. Geburt der Jungen: Januar–März.",
+          ai: false
+        },
+        {
+          q: "Was sind die Unterschiede zwischen Baummarder und Steinmarder?",
+          a: "Baummarder:\n- Kehlfleck: gelb-orange, nicht gegabelt\n- Branten (Pfoten): stark behaart\n- Lebensraum: Wald\n\nSteinmarder:\n- Kehlfleck: weiß, gegabelt (zwei Lappen)\n- Branten: wenig behaart, heller\n- Lebensraum: Siedlungen, Feldgehölze",
+          ai: false
+        },
+        {
+          q: "Wofür nutzt das Rotwild die Grandeln? Welchen Wert haben sie?",
+          a: "Grandeln sind rudimentäre Eckzähne im Oberkiefer des Rotwildes. Funktionell haben sie keine Bedeutung mehr. Als Schmuck und Trophäe sind sie sehr begehrt – Jäger tragen sie gern als Hutschmuck oder Brosche.",
+          ai: false
+        },
+        {
+          q: "Wie unterscheidet man Schwimm- und Tauchenten?",
+          a: "Schwimmenten (z.B. Stockente, Krickente, Knäkente):\n- Gründeln mit Hinterteil nach oben\n- Können direkt von der Wasserfläche aufsteigen\n- Beine weiter vorn\n\nTauchenten (z.B. Reiherente, Schellente):\n- Tauchen unter die Wasseroberfläche\n- Brauchen Anlauf zum Starten\n- Beine weiter hinten am Körper",
+          ai: false
+        },
+        {
+          q: "Was sind Brunft- und Setzzeiten von Rotwild?",
+          a: "Brunft (Hirschbrunft): September/Oktober.\nSatzzeit: Mai/Juni (meist 1 Kalb).\nTragezeit: ca. 33–34 Wochen.\nAbwurf des Geweihs: Februar–März (ältere Hirsche früher).",
+          ai: false
+        },
+        {
+          q: "Woran erkennt man Schwarzwild-, Rot-, Reh- und Gamstrittsiegel?",
+          a: "Schwarzwild: herzförmige, runde Schalen, Afterklauen tief im Boden.\nRotwild: große, länglich-ovale Schalen, Afterklauen bei schnellem Lauf sichtbar.\nRehwild: kleine, schlanke, spitze Schalen, Afterklauen selten sichtbar.\nGamswild: breite, vorne abgerundete Schalen, stark gespreizt im Geröll.",
+          ai: false
+        },
+        {
+          q: "Was ist Winterruhe (Dachs) und Winterschlaf (Murmeltier) – Unterschied?",
+          a: "Winterruhe (Dachs): Körpertemperatur bleibt fast normal, Tier wird bei Wärme wach, schläft nur sehr tief.\nWinterschlaf (Murmeltier, Siebenschläfer): Körpertemperatur sinkt auf fast Außentemperatur, Herzschlag auf wenige Schläge/min – echte Starre.",
+          ai: false
+        },
+        {
+          q: "Was sind Cerviden und Boviden?",
+          a: "Cerviden (Hirsche): tragen Geweihe aus Knochensubstanz, die jährlich abgeworfen und neu gebildet werden. Beispiele: Rothirsch, Rehbock, Damhirsch.\nBoviden (Hohlhörner): tragen Hörner aus Keratin-Scheide über Knochenzapfen, die lebenslang wachsen und nicht abgeworfen werden. Beispiele: Gams, Steinbock, Mufflon.",
+          ai: false
+        },
+        {
+          q: "Welche Tiere haben eine Gallenblase?",
+          a: "Gallenblase haben: Schwarzwild (Wildschwein), Gamswild, Feldhasen.\nKeine Gallenblase haben: Rehwild, Rotwild, Damwild (Cerviden ohne Gallenblase).",
+          ai: false
+        },
+        {
+          q: "Wie funktioniert der Wiederkäuermagen?",
+          a: "Der Wiederkäuermagen besteht aus 4 Abschnitten:\n1. Pansen: Grobzerkleinerung, Fermentation durch Bakterien\n2. Netzmagen: Vorsortierung, Rückführung zum Wiederkäuen\n3. Blättermagen: Wasserentzug\n4. Labmagen: eigentlicher Magen mit Säure- und Enzymverdauung\nNach dem Fressen wird der Pansen-Inhalt hochgewürgt und erneut gekaut (Wiederkäuen).",
+          ai: false
+        },
+        {
+          q: "Wie erkennt man Eichelhäher und was ist die Hähersaat?",
+          a: "Eichelhäher: bunter Vogel mit blauem Flügelspiegel, lautes krächzendes Rufen. Im Herbst trägt er Eicheln ein (bis zu 5 im Schlundkropf) und vergräbt Wintervorräte – aber er vergisst viele davon. Diese vergessenen Eicheln keimen aus: Das nennt man Hähersaat. Der Eichelhäher ist so ein wichtiger Verbreiter der Eiche.",
+          ai: false
+        }
+      ]
+    },
+    // ───────────────────────────────────────────────
+    {
+      id: "jagdrecht",
+      number: 3,
+      title: "Jagdrecht",
+      description: "Bei diesem Tisch liegt oft nichts oder nur die Notizen des Prüfers. Es wird rein mündlich gefragt. Themen sind: Grundlagen des BJagdG und BayJG, Revierarten und Mindestgrößen, Jagdgenossenschaft, Hege-Pflicht, Sachliche Verbote, Jagdzeiten, Abschusspläne, Waffenrecht (WBK), Tierschutzgesetz und jagdliche Haftung.",
+      questions: [
+        {
+          q: "Was ist das Jagdrecht? (§1 BJagdG)",
+          a: "Das Jagdrecht ist das ausschließliche Recht, auf einem bestimmten Gebiet wildlebende Tiere zu hegen, auf sie die Jagd auszuüben und sie sich anzueignen. Es ist untrennbar mit dem Grundeigentum verbunden.",
+          ai: false
+        },
+        {
+          q: "Was ist das Jagdausübungsrecht? Was ist der Unterschied zum Jagdrecht?",
+          a: "Jagdrecht: das mit dem Grundstück verbundene Recht (Grundeigentümer).\nJagdausübungsrecht: das tatsächliche Recht, die Jagd auszuüben – es kann gepachtet oder durch die Jagdgenossenschaft an einen Pächter übertragen werden.\nANEF: Das Jagdausübungsrecht umfasst Aufsuchen, Nachstellen, Erlegen und Fangen von Wild.",
+          ai: false
+        },
+        {
+          q: "Was gehört zur Jagd? (ANEF)",
+          a: "ANEF steht für die vier Bestandteile des Jagdausübungsrechts:\n- Aufsuchen\n- Nachstellen\n- Erlegen\n- Fangen\nvon jagdbaren Tieren.",
+          ai: false
+        },
+        {
+          q: "Welche Jagdbezirksarten gibt es in Bayern?",
+          a: "1. Eigenjagdrevier: zusammenhängende Grundfläche eines Eigentümers.\n   - Mindestgröße Flachland: 81,755 ha\n   - Mindestgröße Gebirge: 300 ha\n2. Gemeinschaftsjagdrevier: Zwangszusammenschluss kleinerer Grundflächen einer Gemeinde, mind. 250 ha.\n3. Staatsjagdrevier: staatliche Flächen.",
+          ai: false
+        },
+        {
+          q: "Was ist die Jagdgenossenschaft und wie setzt sie sich zusammen?",
+          a: "Die Jagdgenossenschaft ist eine Zwangsgemeinschaft aller Grundeigentümer einer Gemeinde, deren Grundflächen kein Eigenjagdrevier bilden.\nBeschlüsse erfordern doppelte Mehrheit: Mehrheit der Stimmen UND Mehrheit der Fläche.\nAn der Spitze steht der Jagdvorstand.",
+          ai: false
+        },
+        {
+          q: "Was ist das Jagdjahr?",
+          a: "Das Jagdjahr beginnt am 1. April und endet am 31. März des folgenden Jahres.",
+          ai: false
+        },
+        {
+          q: "Was sind sachliche Verbote (§19 BJagdG)? Nenne fünf.",
+          a: "1. Jagd auf Wild mit Schlingen, Fallen oder anderen unzulässigen Fanggeräten.\n2. Jagd bei Mondschein oder mit künstlichem Licht (mit Ausnahmen).\n3. Verwendung von Betäubungs- oder Giftstoffen.\n4. Jagd auf Wild aus Fahrzeugen heraus.\n5. Jagd auf Wild, das sich in Not befindet (z.B. Hochwasser).\n6. Vergiften von Ködern.\n7. Jagd in der Schonzeit.",
+          ai: false
+        },
+        {
+          q: "Wann beginnt die Jagdzeit für den Rehbock?",
+          a: "Rehbock: 1. Mai bis 15. Oktober.\nSchmalreh und Schmalgeiß: 1. September bis 15. Januar.\nRickjagd (weibliches Rehwild): 1. Oktober bis 15. Januar.",
+          ai: false
+        },
+        {
+          q: "Darf man einen gesunden starken Bock am 17. Oktober schießen?",
+          a: "Nein. Die Jagdzeit für den Rehbock endet am 15. Oktober. Ein Abschuss am 17. Oktober wäre ein Verstoß gegen die Schonzeit und damit strafbar.",
+          ai: false
+        },
+        {
+          q: "Was ist der Abschussplan? Für welches Wild gilt er?",
+          a: "Der Abschussplan legt fest, wie viele Stücke welchen Alters und Geschlechts jährlich erlegt werden dürfen/sollen.\nGilt für: Schalenwild, AUSSER Schwarzwild (kein Abschussplan erforderlich).\nAufgestellt vom: Jagdausübungsberechtigten.\nGenehmigt von: Unterer Jagdbehörde (Landratsamt).",
+          ai: false
+        },
+        {
+          q: "Wer stellt den Abschussplan auf und mit wem muss er abgestimmt werden?",
+          a: "Der Jagdpächter/-inhaber stellt ihn auf und stimmt ihn mit dem Jagdvorstand der Jagdgenossenschaft und der Unteren Jagdbehörde ab. Bei Rotwild auch mit der Hegegemeinschaft. Er ist jährlich einzureichen.",
+          ai: false
+        },
+        {
+          q: "Für welches Wild gibt es keinen Abschussplan?",
+          a: "Schwarzwild (Wildschwein) ist von der Abschussplanpflicht ausgenommen, da es als Schädling und Seuchenträger (ASP) möglichst intensiv bejagt werden soll.",
+          ai: false
+        },
+        {
+          q: "Was braucht man zum Lösen des ersten Jagdscheins?",
+          a: "1. Jagdprüfungszeugnis (bestandene Jägerprüfung)\n2. Personalausweis oder Reisepass\n3. Nachweis über Jagdhaftpflichtversicherung (Mindestdeckungssumme: 1 Mio. € je Schadenfall)\n4. Passfoto\n5. Gebühr",
+          ai: false
+        },
+        {
+          q: "Ist das Tierschutzgesetz für Jäger relevant?",
+          a: "Ja. Das Tierschutzgesetz verbietet grundsätzlich, Tieren ohne vernünftigen Grund Schmerzen, Leiden oder Schäden zuzufügen. Die ordnungsgemäße Jagdausübung gilt aber als anerkannter vernünftiger Grund. Jäger müssen dennoch auf waidgerechtes Erlegen achten.",
+          ai: false
+        },
+        {
+          q: "Darf man einen Fuchs im Mai schießen?",
+          a: "Nein. Im Mai gilt der Elterntierschutz: Während der Aufzucht der Jungen dürfen führende Muttertiere nicht erlegt werden. Außerdem hat der Fuchs in Bayern vom 1. Februar bis 15. April Schonzeit (je nach Verordnung). Im Mai ist die Fuchsjagd daher in der Regel nicht gestattet.",
+          ai: false
+        },
+        {
+          q: "Wer haftet für Wildschäden in der Landwirtschaft?",
+          a: "Der Jagdausübungsberechtigte (Pächter oder Eigentümer des Jagdreviers) haftet für Wildschäden durch jagdbares Wild (z.B. Schwarzwild, Rehwild) in angrenzenden Kulturen.",
+          ai: false
+        },
+        {
+          q: "Wer haftet bei einem Wildunfall?",
+          a: "Bei einem Verkehrsunfall mit Wild zahlt in der Regel die Kfz-Haftpflichtversicherung des Fahrers NICHT – das Tier gilt als 'Sache' auf der Fahrbahn. Die Teilkaskoversicherung des Fahrers greift bei Haarwild-Kollisionen. Wer das erlegte Wild mitnimmt ohne es zu melden, macht sich der Wilderei strafbar.",
+          ai: false
+        },
+        {
+          q: "Was ist eine Straftat in Bezug auf Abwurfstangen?",
+          a: "Das Mitnehmen von Abwurfstangen (natürlich abgeworfene Geweihe) ohne Erlaubnis ist eine Straftat nach §17a BJagdG (Aneignungsdelikt), da das Aneignungsrecht dem Jagdausübungsberechtigten zusteht.",
+          ai: false
+        },
+        {
+          q: "Bis zu welcher Gesamtfläche darf man Jagdreviere pachten?",
+          a: "Ein Jäger darf Jagdreviere mit einer Gesamtfläche von höchstens 1.000 ha pachten (Pachtflächengrenze nach BayJG).",
+          ai: false
+        },
+        {
+          q: "Was ist die Hegegemeinschaft?",
+          a: "Eine Hegegemeinschaft ist ein freiwilliger Zusammenschluss von Jagdausübungsberechtigten zur gemeinsamen Hege und Bejagung von Schalenwild, besonders Rotwild. Mitglieder: alle Jagdausübungsberechtigten im Rotwildgebiet. Stimmberechtigt: alle Mitglieder.",
+          ai: false
+        },
+        {
+          q: "Besonderheiten bei der Bejagung von Schwarzwild?",
+          a: "Kein Abschussplan erforderlich.\nKann ganzjährig bejagt werden (Frischlinge immer, Überläufer und Adulte bei Schäden und Seuchen).\nNachts jagdbar (mit Ausnahmen und Genehmigung).\nPflicht zur Trichinenschau.\nBei ASP-Verdacht: Veterinäramt informieren.",
+          ai: false
+        }
+      ]
+    },
+    // ───────────────────────────────────────────────
+    {
+      id: "jagdpraxis",
+      number: 4,
+      title: "Jagdpraxis und Wildkrankheiten",
+      description: "Auf dem Tisch liegen Gipsabdrücke von Trittsiegeln, Lockinstrumente, eine Rehbockscheibe und laminierte Bilder von Organen der Pirsch. Gefragt wird nach Jagdarten, Ansitz, Ansprache des Wildes, Schussabgabe, Zeichnen, Nachsuche, Aufbrechen sowie Organ-Erkennung und -Bewertung (gesund/bedenklich). Wildkrankheiten (ASP, Trichinen, Tollwut) sind häufige Themen.",
+      questions: [
+        {
+          q: "Welche Jagdarten gibt es?",
+          a: "Einzeljagd:\n- Ansitz (vom Hochsitz oder Bock)\n- Pirsch/Streife (zu Fuß)\n- Böhmische Streife (Bogenlinie durch Revier)\n\nGesellschaftsjagd:\n- Treibjagd (Treiber und Schützen)\n- Drückjagd (Schützen am Stand, Wild wird gedrückt)\n- Kesseltreiben (Wild im Kreis eingeschlossen)\n- Erntejagd (auf Feldern)\n- Lockjagd (mit Lockinstrumenten)",
+          ai: false
+        },
+        {
+          q: "Für welche Wildarten wird die Lockjagd eingesetzt und womit?",
+          a: "Rehwild (Rehbock): Rehpfeife imitiert das Klagen der Ricke oder das Fiepen des Kitzes.\nRotwild: Hirschbrunftpfeife, imitiert röhrenden Hirsch oder Brunfttieren.\nFuchs: Hasenpfeife oder Mäusepfeife (Lockt auf Nahrung).\nEnten und Gänse: Lockpfeifen für jeweilige Arten.",
+          ai: false
+        },
+        {
+          q: "Was sind Lockinstrumente? (Hasenpfeife und Quäke)",
+          a: "Quäke (Reizquäke): imitiert das Quieken einer Maus, lockt den Fuchs auf Nahrungssuche.\nHasenpfeife: imitiert das Schreien eines verletzten Hasen, lockt Fuchs und Greifvögel.",
+          ai: false
+        },
+        {
+          q: "Was machen Sie, wenn Sie auf dem Hochsitz sind und Wild erwartet wird?",
+          a: "1. Entfernungen zu markanten Geländepunkten schätzen und einprägen.\n2. Kugelfang prüfen – wo ist ein sicherer Kugelfang vorhanden?\n3. Fußwege und mögliche Zugwege anderer Personen beachten.\n4. In Deckung bleiben, Bewegungen minimieren.\n5. Wind beachten (nicht gegen den Wind ansitzen).",
+          ai: false
+        },
+        {
+          q: "Wohin schießen beim Rehbock (Kammerschuss)?",
+          a: "Kammerschuss: hinter dem Schulterblatt, im unteren Drittel der Brusthöhle, wenn das Stück breit steht.\nBei diesem Treffer werden Herz und Lunge getroffen. Das Wild bricht kurz zusammen oder flieht kurz und verendet nahe dem Anschuss.",
+          ai: false
+        },
+        {
+          q: "Wie zeichnet Wild nach einem Hoch- oder Tiefblattschuss bzw. Waidwundschuss?",
+          a: "Hochblattschuss (Lunge): Wild steigt steil nach vorne-oben, Vorderläufe greifen weit aus, flieht schnell, bricht oft nahe zusammen.\nTiefblattschuss (Herz): bricht ein, Vorderläufe knicken ein, bleibt oft nahe dem Anschuss.\nWaidwundschuss (Bauchschuss): krümmt Rücken nach oben (Katzenbuckel), schleicht langsam weg.",
+          ai: false
+        },
+        {
+          q: "Was tun nach der Schussabgabe? (Vorgehen nach dem Schuss)",
+          a: "1. Schusslage einprägen (Geländepunkte merken).\n2. Mit nachgeladenem Gewehr im Anschlag warten (ca. 5–15 Minuten).\n3. Zum Anschuss gehen und Pirschzeichen lesen.\n4. Gegebenenfalls Nachsuche mit Hund einleiten.\n5. Verendetes Wild versorgen (Strecke legen, Aufbrechen).",
+          ai: false
+        },
+        {
+          q: "Welche Pirschzeichen gibt es und was bedeuten sie?",
+          a: "Schweiß (Blut):\n- Hellrot, blasig = Lunge (Lungenstreifer oder Lunge getroffen)\n- Dunkelrot = Herz, Leber, Kammer\n- Grünlich/gelblich = Waidwundschuss (Pansen/Darm)\n- Klar = Niere/Gallenblase\nWeitere Zeichen: Wildbreitschweiß (Gewebesfetzen), Knochensplitter, Wollhaare, Mageninhalt.",
+          ai: false
+        },
+        {
+          q: "Was ist ein Waidwundschuss und wie gehen Sie vor?",
+          a: "Waidwundschuss = Treffer in den Bauchraum (Pansen, Darm). Das Wild kürzt Rücken, schleicht weg, hält sich am Boden.\nVorgehen: Mindestens 3–4 Stunden (besser über Nacht) warten, damit das Wild verendet und sich nicht aufscheucht. Dann Nachsuche mit dem Hund.\nBeim Aufbrechen: Vorsicht, Pansen/Darm nicht verletzen!",
+          ai: false
+        },
+        {
+          q: "Wann und wie lange wartet man vor der Nachsuche?",
+          a: "Nach sicherem Schuss (Kammertreffer): 10–15 Minuten warten.\nNach Lungentreffer: ca. 30 Minuten.\nNach Waidwundschuss: mindestens 3–4 Stunden, besser über Nacht.\nNach Aufbrecher: sofort Nachsuche mit dem Hund.",
+          ai: false
+        },
+        {
+          q: "Erklären Sie das Aufbrechen eines Rehbocks (Ablauf).",
+          a: "1. Äußere Inspektion: bedenkliche Merkmale prüfen.\n2. After abbinden (Kordel oder Aufbrecher-Instrument).\n3. Hängend oder liegend aufbrechen.\n4. Bauchdecke vorsichtig aufschneiden (Messer flach, nicht zu tief).\n5. Gescheide (Magen, Darm) vorsichtig lösen und entnehmen.\n6. Brust öffnen, Herz und Lunge entnehmen.\n7. Nieren aus der Fettkapsel lösen.\n8. Zwerchfellpfeiler (für Trichinenschau) beim Schwarzwild stehen lassen!\n9. Organe auf Auffälligkeiten prüfen.\n10. Wild kühlen.",
+          ai: false
+        },
+        {
+          q: "Was ist beim Aufbrechen von Schwarzwild anders als beim Reh?",
+          a: "1. Gallenblase vorhanden (vorsichtig entnehmen, nicht anschneiden!).\n2. Zwerchfellpfeiler stehen lassen für die Trichinenschau.\n3. Schwarzwild hat Einkammermagen (kein Pansen wie beim Wiederkäuer).\n4. Hygiene wichtiger wegen ASP-Risiko: Handschuhe, Messer desinfizieren.",
+          ai: false
+        },
+        {
+          q: "Was macht die kundige Person?",
+          a: "Die kundige Person (nach EU-Lebensmittelrecht) prüft:\n- Bedenkliche Merkmale VOR dem Schuss (Verhalten, Äußeres)\n- Bedenkliche Merkmale NACH dem Schuss (Organe der Pirsch)\nSie kann eine Bescheinigung ausstellen, die das Wild als unbedenklich erklärt und für direkten Verkauf freigeben. Bei Auffälligkeiten veranlasst sie eine Laboruntersuchung.",
+          ai: false
+        },
+        {
+          q: "Welche Wildkrankheiten machen das Wildbret genussuntauglich?",
+          a: "Immer untauglich: Tollwut, Milzbrand, Tularämie, positiver Trichinenbefund, Strahlenkrankheit, ASP (Afrikanische Schweinepest), Brucellose.\nBedingt tauglich/untauglich: Tuberkulose (geschwollene Lymphknoten), starke Abmagerung, Brucellose.\nGenusstauglich (mit Einschränkung): Lungenwürmer (Lunge entsorgen, Rest verwertbar), leichter Parasitenbefall.",
+          ai: false
+        },
+        {
+          q: "Wie erkennt man ASP (Afrikanische Schweinepest) und was tut man bei Verdacht?",
+          a: "Erkennung:\n- Deutlich vergrößerte, dunkelrote bis teerartige Milz\n- Punktförmige Einblutungen in Nieren, Kehldeckel, Blase\n- Apathisches, abgesondertes Stück\n\nVorgehen bei Verdacht:\n1. Veterinäramt informieren (bei Nichterreichbarkeit Polizei)\n2. Wild NICHT transportieren oder verarbeiten\n3. Fundort markieren\n4. Eigene Kleidung und Ausrüstung desinfizieren",
+          ai: false
+        },
+        {
+          q: "Was ist die Becquerel-Messung? Welcher Grenzwert gilt?",
+          a: "Bei der Becquerel-Messung wird die Radioaktivität im Wildbret gemessen (relevant nach Tschernobyl, besonders bei Schwarzwild).\nGrenzwert: 600 Bq/kg (Becquerel pro Kilogramm) für Fleisch in der EU.\nMaterial: Fleischprobe aus dem Rücken oder Schlegel.",
+          ai: false
+        },
+        {
+          q: "Was ist die Trichinenschau und wie viel Material wird entnommen?",
+          a: "Die Trichinenschau ist eine Pflichtuntersuchung bei Schwarzwild (und anderen Allesfressern wie Dachs, Bär) auf Trichinella spiralis.\nMaterial: 2 × 20 g = mindestens 40 g Fleisch, entnommen aus den Zwerchfellpfeilern (beim Aufbrechen stehen lassen!).\nUntersuchung im Labor oder beim Veterinäramt. Erst bei negativem Befund darf das Fleisch verwertet werden.",
+          ai: false
+        },
+        {
+          q: "Wie läuft ein Kesseltreiben ab? Welche Jagdhornsignale gibt es?",
+          a: "Ablauf:\n1. Treiber bilden einen Kreis um Wild.\n2. Kreis wird langsam verkleinert – Wild im Kessel eingeschlossen.\n3. Schützen sichern zwischen den Treibern.\n\nJagdhornsignale:\n- Jagdhorn 'Jagdbeginn'\n- 'Treiber rein' (Kreis schließt sich)\n- 'Vorbei' (Jagd beendet)\n- Achtungssignal bei Gefahr",
+          ai: false
+        },
+        {
+          q: "Wie läuft eine Böhmische Streife ab?",
+          a: "Bei der Böhmischen Streife bewegen sich mehrere Schützen in einer Linie mit seitlichem Abstand (ca. 30–50 m) durch das Revier. Die Jäger schreiten gleichzeitig vorwärts, meist gegen den Wind. Wild wird aufgestöbert und kann sicher bejagt werden, da die Schussrichtung nach vorne bekannt ist.",
+          ai: false
+        },
+        {
+          q: "Woran erkenne ich, dass Rehwild in meinem Revier vorkommt?",
+          a: "Trittsiegel in weichem Boden oder Schnee.\nLosung (kleine, runde Pillen).\nFährten/Wechsel.\nFege- und Schälschäden an jungen Bäumen.\nGeschabte Böden (Scharrplätze).\nSichtbeobachtungen in Dämmerung.",
+          ai: false
+        },
+        {
+          q: "Wie erkennt man ein Schmalreh und kann man sicher sein?",
+          a: "Schmalreh (weibliches Rehwild ohne Kitz, ca. 1 Jahr): tritt oft allein aus, komplett neu verfärbt.\nSicher ist man nicht: es könnte auch eine führende Ricke sein (hat Kitz im Schlag).\nSicherheit gibt nur: Sicht auf die Spinne (Unterbauch) des Stücks mit dem Spiegel zur Seite. Bei führender Ricke sind Zitzen sichtbar.",
+          ai: false
+        }
+      ]
+    },
+    // ───────────────────────────────────────────────
+    {
+      id: "jagdhunde",
+      number: 5,
+      title: "Jagdhunde",
+      description: "An der Wand hängen Hundetafeln mit Rasseabbildungen. Auf dem Tisch liegen Ausrüstungsgegenstände: Apportierbock, Apportl, Fährenschuh, Feldleine, Schweißleine (aufgedockt) mit Schweißhalsung und Wirbel. Gefragt wird nach Rassengruppen, Ausrüstungserkennung, Ausbildungsschritten, Impfungen, Zucht und Gesundheit des Jagdhundes.",
+      questions: [
+        {
+          q: "Welche Jagdhunderassengruppen gibt es?",
+          a: "1. Vorstehhunde: stehen vor Wild (z.B. Deutsch Kurzhaar, Drahthaar, Langhaar, Weimaraner)\n2. Bracken: jagen laut, treiben Wild auf (z.B. Beagle, Westfälische Dachsbracke, Alpenländische Dachsbracke)\n3. Stöberhunde: durchsuchen Dickungen (z.B. Wachtel, Kleiner Münsterländer)\n4. Bauhunde: für Arbeit im Bau (z.B. Dackel, Jagdterrier)\n5. Apportierhunde: speziell zum Apportieren (z.B. Labrador, Golden Retriever)\n6. Schweißhunde: Nachsuche auf verletztem Wild (z.B. Hannöverscher Schweißhund)",
+          ai: false
+        },
+        {
+          q: "Welcher Hund eignet sich für welches Revier?",
+          a: "Feld- und Offenlandrevier: Vorstehhund (Vorsteher sucht offen vor dem Schützen).\nWaldrevier/Dickung: Stöberhund, Bracke.\nAlpines Revier: Brackenschlag, Alpenländische Dachsbracke.\nAllrounder: Deutsch Kurzhaar (für alle Reviertypen geeignet).",
+          ai: false
+        },
+        {
+          q: "Was ist der Unterschied zwischen Feldleine und Schweißriemen?",
+          a: "Feldleine: lange dünne Leine (ca. 10–15 m) zur Kontrolle des Hundes bei der Feldsuche (Vorsuche).\nSchweißriemen: breiter, robuster Lederriemen (ca. 6 m) für die Schweißarbeit. Er ist 'aufgedockt' (zusammengerollt), damit er im Wald nicht hängt.",
+          ai: false
+        },
+        {
+          q: "Was ist eine Schweißhalsung und warum ist sie breit?",
+          a: "Die Schweißhalsung ist eine breite, stabile Halsung (meist aus Leder) mit einem Drehwirbel. Die Breite dient der Entlastung von Hals und Nacken des Hundes, wenn er an der Schweißfährte zieht. Der Drehwirbel verhindert Verdrehen des Riemens.",
+          ai: false
+        },
+        {
+          q: "Was ist der Apportierbock und ab wann darf der Hund ihn verwenden?",
+          a: "Der Apportierbock (Oberländer Apportierbock) ist ein Holz-Dumbbell zur Apportierausbildung. Der Hund soll ihn sitzen und tragen lernen.\nErsatz beim Milchgebiss: Dummy (weicher Stoffapportier) – der Holzbock ist zu schwer und könnte das noch weiche Milchgebiss schädigen.\nNach dem Zahnwechsel (ca. 6 Monate) darf der Holzbock verwendet werden.",
+          ai: false
+        },
+        {
+          q: "Wofür ist die Doppelpfeife beim Jagdhund?",
+          a: "Trillerpfiff (kurzer scharfer Ton): 'Down' / Halt / Abbruch – Hund soll sofort stoppen.\nNormaler Pfeifton: Herrufen des Hundes (ein Pfiff) oder Wendepfiff (mehrere kurze Pfiffe) bei der Feldsuche.",
+          ai: false
+        },
+        {
+          q: "Wie läuft die Schweißarbeit ab? Welche Hilfsmittel gibt es?",
+          a: "Schweißarbeit: Der Hund folgt der Blutfährte (Schweiß) eines angeschossenen Tieres.\nAblauf: Hund an der Schweißleine, Führmann folgt. Am Wundbett Schweißhalsung anlegen, loslassen wenn Tier gestellt.\nHilfsmittel:\n- Tupfstock (Stab mit Bluttupfer zum Anlegen der Fährte)\n- Tropfflasche (künstliche Fährte)\n- Schleppe (Kunstfährte aus Decken-/Hautfetzen)",
+          ai: false
+        },
+        {
+          q: "Was bedeutet 'Schnallen am Wundbett'?",
+          a: "Wenn der Hund an der Schweißfährte das Wundbett (Stelle, wo das Wild aufgebrochen wurde oder gelegen hat) findet, wird er 'geschnallt': Die Schweißhalsung wird abgenommen und der Hund wird freigelassen, um das Wild selbstständig zu stellen oder zu verbellen.",
+          ai: false
+        },
+        {
+          q: "Wo muss die Schweißhalsung abgenommen werden?",
+          a: "Am Wundbett (Schnallen).\nBei der Wasserarbeit (Hund könnte sich verheddern und ertrinken).\nBei der Bauarbeit (im Bau könnte sich der Hund verfangen).\nBeim Buschieren (in dichtem Gestrüpp).\nÜberall, wo sich der Hund verheddern kann.",
+          ai: false
+        },
+        {
+          q: "Was ist 'angewölft'?",
+          a: "Angewölft bedeutet, dass ein Hund an einen Wolfsrudel oder an Haustierherden gewöhnt wurde. Im jagdlichen Sinne bezeichnet es die Gewöhnung eines Jagdhundes an bestimmte Wildarten, damit er sie jagt oder apportiert, ohne sie zu beschädigen.",
+          ai: true
+        },
+        {
+          q: "Was ist 'Stöbern' und was ist 'Buschieren'?",
+          a: "Stöbern: Hund durchsucht aktiv Dickungen, Schilf oder dichtes Gelände und treibt das Wild heraus. Kann laut (mit Lauten) oder lautlos erfolgen.\nBuschieren: gezielte Durchsuchung von Einzelgebüschen oder kleineren Deckungen durch den Hund vor dem Schützen.",
+          ai: false
+        },
+        {
+          q: "Welche Inhalte haben Gebrauchsprüfungen?",
+          a: "Vor dem Schuss (Prüfung der Anlagenarbeit):\n- Vorsuche (Feldsuche, Wald)\n- Stöbern, Buschieren\n- Verhalten gegenüber Wild und Schuss\n\nNach dem Schuss (Prüfung der Schweißarbeit):\n- Apportieren von Federwild und Haarwild\n- Wasserarbeit\n- Schweißarbeit, Totverbellen\n- Schleppen",
+          ai: false
+        },
+        {
+          q: "Welche Impfungen erhält der Welpe und wann?",
+          a: "Ab Woche 8:\n- Staupe, Parvovirose, Hepatitis (HCC), Leptospirose\nAb Woche 12 (Wiederholung):\n- + Tollwut\nOptional: Zwingerhusten (nach Bedarf/Risiko)\nAuffrischung:\n- Leptospirose jährlich\n- Tollwut alle 3 Jahre\n- Staupe/Parvo alle 3 Jahre",
+          ai: false
+        },
+        {
+          q: "Wie viele Zähne hat der Hund im Milchgebiss und im Dauergebiss?",
+          a: "Milchgebiss: 28 Zähne.\nDauergebiss: 42 Zähne.\nZahnwechsel beginnt: ca. 4–5 Monate, abgeschlossen: ca. 6–7 Monate.",
+          ai: false
+        },
+        {
+          q: "Wann hat die Hündin die erste Hitze?",
+          a: "Die erste Hitze tritt bei Jagdhündinnen typischerweise im Alter von 8–12 Monaten auf (im Schnitt ca. 10 Monate).\nPhasen: Vorhitze, Haupthitze (Eisprung, fruchtbar), Nachhitze.\nTragezeit: ca. 63 Tage (9 Wochen).\nSäugezeit: ca. 8 Wochen.",
+          ai: false
+        },
+        {
+          q: "Was bekommt man vom Züchter bei der Welpenabholung?",
+          a: "Europäischer Heimtierausweis: mit Chipnummer und Impfnachweisen.\nAhnentafel/Zuchtbuchauszug: Nachweis der Reinrassigkeit.\nAbgabealter: frühestens 8 Wochen (gesetzlich vorgeschrieben).",
+          ai: false
+        },
+        {
+          q: "Was ist die Stubendressur?",
+          a: "Die Stubendressur ist die erste Ausbildungsphase, in der der Welpe in der Wohnung Grundkommandos und Alltagsregeln lernt:\n- Stubenreinheit\n- Namen kennen\n- Grundkommandos: Sitz, Platz, Fuß, Hier, Aus\n- Leinenführigkeit\nSie bildet die Grundlage für alle weiteren Ausbildungsschritte.",
+          ai: false
+        },
+        {
+          q: "Darf man dem Jagdhund rohes Schweinefleisch füttern?",
+          a: "Nein! Rohes Schweinefleisch kann das Aujeszky-Virus (Pseudowut) übertragen. Die Krankheit ist für Hunde (und Katzen) tödlich, für Menschen hingegen harmlos. Daher: Kein rohes Schweinefleisch an Hunde füttern!",
+          ai: false
+        },
+        {
+          q: "Woran erkennt man Ohrenzwang, Würmer und Räude beim Hund?",
+          a: "Ohrenzwang (Ohrmilben/Infektion): Hund schüttelt Kopf, kratzt am Ohr, dunkles Sekret im Ohr.\nWürmer (Bandwurm): Hund rutscht auf Keulen (juckt am After, auch Analdrüsen).\nRäude (Sarcoptes-Milbe): Übertragung vom Fuchs, vor allem bei Bauhunden. Heftiger Juckreiz, Krusten, Haarausfall.",
+          ai: false
+        }
+      ]
+    },
+    // ───────────────────────────────────────────────
+    {
+      id: "naturschutz",
+      number: 6,
+      title: "Naturschutz und Landbau",
+      description: "Auf dem Tisch liegen Zweige von Nadel- und Laubbäumen, Körner und Ähren verschiedener Feldfrüchte, manchmal auch Rindenstücke mit Schäden. An der Wand hängen Vogel- und Tierpräparate sowie laminierte Pflanzenfoto-Tafeln. Gefragt wird nach Baumbestimmung, Feldfrüchten, Wildschäden, Naturschutz-Themen (Zugvögel, Monokultur, Borkenkäfer) und jagdlicher Hege.",
+      questions: [
+        {
+          q: "Was ist ein Wald? Welche Aufgaben hat er?",
+          a: "Ein Wald ist eine Fläche mit Baumbestand, die eine gewisse Mindestgröße hat und Waldfunktionen erfüllt.\nFunktionen:\n- Nutzfunktion: Holzproduktion, Jagd, Pilze/Beeren\n- Schutzfunktion: Wasserhaushalt, Erosionsschutz, Klimaschutz, Lärmschutz\n- Erholungsfunktion: Freizeit, Gesundheit\n- Sonderfunktionen: Naturschutz, Biotopverbund",
+          ai: false
+        },
+        {
+          q: "Was ist eine Monokultur und welche Probleme hat sie?",
+          a: "Monokultur: eine Waldfläche, auf der flächig nur eine einzige Baumart angebaut wird.\nProbleme:\n- Anfällig für Schädlinge (Borkenkäfer befällt Fichtenmonokulturen massiv)\n- Sturmwurfgefahr (keine strukturelle Stabilität)\n- Artenarmut, schlechte Biodiversität\n- Bodenverschlechterung (Nährstoffentzug, Versauerung)",
+          ai: false
+        },
+        {
+          q: "Wo lebt der Borkenkäfer? Welchen Schaden richtet er an?",
+          a: "Der Borkenkäfer lebt und brütet unterhalb der Rinde (Bast), zwischen Rinde und Holz. Er befällt bevorzugt geschwächte oder stressgeplagte Bäume (z.B. Fichten nach Trockensommern). Die Käferfraßgänge unterbrechen den Nährstofftransport und töten den Baum. Bei Massenvermehrung kann er ganze Waldbestände vernichten.",
+          ai: false
+        },
+        {
+          q: "Was ist der Unterschied zwischen Naturverjüngung und Kunstanpflanzung?",
+          a: "Naturverjüngung: Samen der Altbäume fallen natürlich ab und wachsen auf. Vorteile: standortangepasst, kostengünstiger, natürlich.\nKunstanpflanzung: Forstpflanzung mit gezielt ausgewählten Setzlingen. Vorteile: schneller, kontrolliert, bestimmte Baumarten gezielt einsetzbar.",
+          ai: false
+        },
+        {
+          q: "Welche Bäume sind Licht- und welche Schattenbaumarten?",
+          a: "Lichtbaumarten (brauchen viel Licht): Lärche, Kiefer, Eiche, Birke, Douglasie.\nSchattenbaumarten (tolerieren Schatten): Buche, Weißtanne, Fichte.\nBedeutung: Schattenbaumarten können unter Lichtbaumarten nachwachsen (Unterpflanzung).",
+          ai: false
+        },
+        {
+          q: "Wofür werden Nadelhölzer (Lärche, Douglasie) und Buche verwendet?",
+          a: "Lärche und Douglasie: sehr witterungsbeständig → ideal für Außenbereich, Terrassen, Hochsitze, Dachstühle, Fensterrahmen.\nRotbuche: hartes, edles Holz → Möbel, Parkett, Brennholz, aber NICHT für Außenbereich (verschimmelt schnell, nicht witterungsbeständig).",
+          ai: false
+        },
+        {
+          q: "Welche Wildschäden entstehen im Wald?",
+          a: "Fegen: Rehböcke reiben Bast an jungen Bäumen ab (Revier- und Imponierverhalten) → Wunden, Wuchsschäden.\nSchälschaden:\n- Sommerschälschaden: Rotwild schält grüne Rinde im Sommer für Zucker/Mineralstoffe\n- Winterschälschaden: Rotwild und Sika schälen im Winter Rinde als Nahrung\nVerbiss: Rehe fressen Triebspitzen, hemmt Wachstum.\nWühlschäden: Schwarzwild wühlt nach Nahrung.",
+          ai: false
+        },
+        {
+          q: "Welches Wild schält Bäume?",
+          a: "Hauptsächlich Rotwild und Sikawild – beide schälen besonders intensiv im Winter.\nIn geringerem Maß auch Mufflons und Rehwild.",
+          ai: false
+        },
+        {
+          q: "Welche Wildschäden gibt es in der Landwirtschaft?",
+          a: "Schwarzwild: durchwühlt Äcker (Mais, Rüben, Getreide), zerstört gesamte Flächen durch Rotten.\nRehwild: Fraßschäden in Gärten und Kulturen, Verbiss in Raps.\nGänse: fressen Wintergetreide ab.\nHasen: fressen Kulturen.",
+          ai: false
+        },
+        {
+          q: "Wie kann man Wildäcker anlegen und welche Pflanzen eignen sich?",
+          a: "Wildäcker dürfen auf kahlgeschlagenen oder brachliegenden Flächen angelegt werden (nicht im bewachsenen Wald).\nGeeignete Pflanzen: Klee, Raps, Rüben, Hafer, Topinambur, Wicken, Sonnenblume.",
+          ai: false
+        },
+        {
+          q: "Welche Bedeutung haben Hecken für Wild und Landwirtschaft?",
+          a: "Für Wild: Deckung und Schutz vor Witterung, Ruheplatz, Äsung (Beeren, Knospen), Aufzucht der Jungen.\nFür Landwirtschaft: Windschutz (schützt Ackerböden), Erosionsschutz, Erhaltung der Bodenfeuchte, Lebensraum für Nützlinge (natürliche Schädlingsbekämpfung).",
+          ai: false
+        },
+        {
+          q: "Was braucht der Fasan und wie kann der Jäger helfen?",
+          a: "Der Fasan braucht: abwechslungsreiche, kleinräumige Wald-Feld-Struktur mit Hecken, Deckung im Winter (Schilf, Brombeer), Äsungsflächen.\nJäger kann helfen durch: Fasanschütten (Deckung und Futterstation), Anlegen von Hecken und Wildstreifen, Raubwildbejagung (Fuchs, Marder, Krähen).",
+          ai: false
+        },
+        {
+          q: "Was macht den Schwarzspecht so wichtig?",
+          a: "Der Schwarzspecht hackt die größten Baumhöhlen aller heimischen Spechte. Diese Höhlen dienen als Wohnraum für andere Tiere, die keine eigenen Höhlen bauen können: Hohltaube, Dohle, Fledermäuse, Kleinhöhlenbrüter, manchmal Marder. Er ist damit ein wichtiger 'Wohnungsbaumeister' im Wald.",
+          ai: false
+        },
+        {
+          q: "Welche Vögel sind Zugvögel? (aus den Prüfungs-Präparaten)",
+          a: "Zugvögel: Kiebitz (Erstankömmling im Frühjahr, Wiesenbrüter), Wiedehopf, Schwalben, viele Drosselarten, Baumfalke.\nKeine Zugvögel: Käuze und Eulen (Standvögel), Rabenvögel (Standvögel oder Teilzieher), Eichelhäher.\nKiebitz ist gleichzeitig auch Wiesenbrüter (wichtig für Schutzmaßnahmen).",
+          ai: false
+        },
+        {
+          q: "Was ist der Unterschied zwischen Ringelnatter und Kreuzotter?",
+          a: "Ringelnatter:\n- Ungiftig\n- Lebt am Wasser, schwimmt gut\n- Legt Eier (eiabilit)\n- Kennzeichen: gelb-orangener Halsfleck\n\nKreuzotter:\n- Giftig (häufigste Giftschlange Deutschlands)\n- Lebendgebärend (ovovivipar)\n- Kennzeichen: Zickzack-Muster auf dem Rücken",
+          ai: false
+        },
+        {
+          q: "Ab wann dürfen Wiesen nicht mehr gewalzt werden und warum?",
+          a: "Ab dem 15. März dürfen Wiesen nicht mehr gewalzt werden.\nGrund: Schutz von Wiesenbrütern (Kiebitz, Feldlerche) und Insekten (Larven im Boden). Das Walzen könnte Nester und Bodenbrüter-Eier zerstören.",
+          ai: false
+        },
+        {
+          q: "Welche Bedeutung hat die Vogelbeere (Eberesche)?",
+          a: "Die roten Beeren der Vogelbeere sind im Herbst eine wichtige Wildäsung.\nFür Tiere: Drosseln, andere Vögel, Marder, Fuchs.\nBlüte im Frühjahr: wichtige Insektenweide (Bienen, Hummeln).\nBesondere Bedeutung für rastende Zugvögel als Energiequelle auf dem Zug.",
+          ai: false
+        },
+        {
+          q: "Was ist der Unterschied zwischen Sommer- und Wintergetreide?",
+          a: "Sommergetreide: wird im Frühjahr gesät, reift im Sommer (z.B. Sommergerste, Sommerweizen, Hafer, Mais).\nWintergetreide: wird im Herbst gesät, überwintert, reift im nächsten Sommer (z.B. Winterweizen, Wintergerste, Roggen).\nFür die Jagd: Wintergetreide bietet wichtige Winteräsung (grüne Schläge im Winter).",
+          ai: false
+        },
+        {
+          q: "Wie erkennt man Fege- und Schälschaden und wer verursacht ihn?",
+          a: "Fegeschaden: schmale, senkrechte Wunden auf jungen Stämmen, abgeriebene Rinde, oft Harzaustritt. Verursacher: Rehbock (Basttreiben und Reviermarkierung). Höhe 30–100 cm.\nSchälschaden: flächige, horizontale Schäden auf der glatten Rinde, breite Bisse, Zahnspuren nicht sichtbar bei Sommerschälen. Verursacher: Rotwild, Sika.",
+          ai: false
+        }
+      ]
+    }
+  ]
+};
+
+// ═══════════════════════════════════════════════════
+//  APP STATE
+// ═══════════════════════════════════════════════════
+let currentCatIdx = 0;
+let isQuizMode = false;
+
+// Quiz state
+let quizQuestions = [];
+let quizIdx = 0;
+let quizAnswerShown = false;
+
+// ═══════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════
+function init() {
+  buildCatTabs();
+  buildQuizCatSelect();
+  renderStudyMode(0);
+}
+
+function buildCatTabs() {
+  const nav = document.getElementById('cat-tabs');
+  EXAM_DATA.categories.forEach((cat, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-tab' + (i === 0 ? ' active' : '');
+    btn.textContent = cat.title;
+    btn.onclick = () => selectCategory(i);
+    nav.appendChild(btn);
+  });
+}
+
+function buildQuizCatSelect() {
+  const sel = document.getElementById('quiz-cat-select');
+  EXAM_DATA.categories.forEach((cat, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = cat.title;
+    sel.appendChild(opt);
+  });
+}
+
+// ═══════════════════════════════════════════════════
+//  STUDY MODE
+// ═══════════════════════════════════════════════════
+function selectCategory(idx) {
+  currentCatIdx = idx;
+  document.querySelectorAll('.cat-tab').forEach((t, i) => {
+    t.classList.toggle('active', i === idx);
+  });
+  if (!isQuizMode) renderStudyMode(idx);
+}
+
+function renderStudyMode(idx) {
+  const cat = EXAM_DATA.categories[idx];
+  document.getElementById('cat-desc').innerHTML =
+    `<h2>${cat.number}. ${cat.title}</h2><p>${cat.description}</p>`;
+
+  document.getElementById('q-count-label').textContent =
+    `${cat.questions.length} Fragen`;
+
+  const list = document.getElementById('question-list');
+  list.innerHTML = '';
+  cat.questions.forEach((q, i) => {
+    const item = document.createElement('div');
+    item.className = 'question-item';
+    item.innerHTML = `
+      <button class="question-toggle" onclick="toggleQ(this)">
+        <span class="q-number">${i + 1}.</span>
+        <span class="q-text">${escHtml(q.q)}</span>
+        <span class="q-chevron">▶</span>
+      </button>
+      <div class="answer-panel">
+        ${q.ai ? '<span class="ai-badge">KI-Antwort</span>' : ''}
+        <div class="answer-text">${escHtml(q.a)}</div>
+        ${q.ai ? '<div class="source-note">⚠ Diese Antwort wurde durch KI ergänzt. Bitte mit Fachliteratur (z.B. Heintges) verifizieren.</div>' : ''}
+      </div>`;
+    list.appendChild(item);
+  });
+}
+
+function toggleQ(btn) {
+  const item = btn.closest('.question-item');
+  item.classList.toggle('open');
+}
+
+function expandAll() {
+  const open = document.querySelectorAll('.question-item.open').length;
+  const all = document.querySelectorAll('.question-item');
+  if (open < all.length) {
+    all.forEach(i => i.classList.add('open'));
+  } else {
+    all.forEach(i => i.classList.remove('open'));
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  QUIZ MODE
+// ═══════════════════════════════════════════════════
+function toggleMode() {
+  isQuizMode = !isQuizMode;
+  const btn = document.getElementById('mode-toggle-btn');
+  const study = document.getElementById('study-mode');
+  const quiz = document.getElementById('quiz-mode');
+
+  btn.textContent = isQuizMode ? 'Lernmodus' : 'Quiz-Modus';
+  btn.classList.toggle('active', isQuizMode);
+  study.classList.toggle('hidden', isQuizMode);
+  quiz.classList.toggle('active', isQuizMode);
+
+  if (isQuizMode) initQuiz();
+}
+
+function initQuiz() {
+  const sel = document.getElementById('quiz-cat-select');
+  const val = sel.value;
+  if (val === 'all') {
+    quizQuestions = [];
+    EXAM_DATA.categories.forEach(cat => {
+      cat.questions.forEach(q => quizQuestions.push({ ...q, catTitle: cat.title }));
+    });
+  } else {
+    const cat = EXAM_DATA.categories[parseInt(val)];
+    quizQuestions = cat.questions.map(q => ({ ...q, catTitle: cat.title }));
+  }
+  quizIdx = 0;
+  showQuizQuestion();
+}
+
+function shuffleQuiz() {
+  for (let i = quizQuestions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [quizQuestions[i], quizQuestions[j]] = [quizQuestions[j], quizQuestions[i]];
+  }
+  quizIdx = 0;
+  showQuizQuestion();
+}
+
+function showQuizQuestion() {
+  if (!quizQuestions.length) return;
+  quizAnswerShown = false;
+  const q = quizQuestions[quizIdx];
+
+  document.getElementById('quiz-cat-label').textContent = q.catTitle;
+  document.getElementById('quiz-question').textContent = q.q;
+  document.getElementById('quiz-answer-text').textContent = q.a;
+  document.getElementById('quiz-ai-note').style.display = q.ai ? 'block' : 'none';
+
+  const answerDiv = document.getElementById('quiz-answer');
+  answerDiv.classList.remove('visible');
+
+  document.getElementById('reveal-btn').style.display = '';
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('prev-btn').disabled = quizIdx === 0;
+
+  const total = quizQuestions.length;
+  document.getElementById('quiz-prog-label').textContent =
+    `Frage ${quizIdx + 1} von ${total}`;
+  document.getElementById('quiz-prog-bar').style.width =
+    `${((quizIdx + 1) / total) * 100}%`;
+}
+
+function revealAnswer() {
+  document.getElementById('quiz-answer').classList.add('visible');
+  document.getElementById('reveal-btn').style.display = 'none';
+  document.getElementById('next-btn').style.display = '';
+}
+
+function nextQuestion() {
+  if (quizIdx < quizQuestions.length - 1) {
+    quizIdx++;
+    showQuizQuestion();
+  }
+}
+
+function prevQuestion() {
+  if (quizIdx > 0) {
+    quizIdx--;
+    showQuizQuestion();
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════════
+function escHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\n/g, '<br>');
+}
+
+init();
+</script>
+</body>
+</html>
