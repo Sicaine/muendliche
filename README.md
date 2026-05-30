@@ -23,11 +23,8 @@ Interaktive Lernhilfe für die mündliche Jägerprüfung in Bayern, basierend au
 
 Die Fragen basieren auf Gedächtnisprotokollen folgender Prüfungen:
 
-- Ebersberg, 22.05.2024
-- März 2023
-- Simon/Rosenheim, 21.05.2025
-- Q2 2024
-- Protokolle Florian, Max, Tom (Ebersberg 2025)
+- Ebersberg & Rosenheim
+- 2024 - 2025
 
 ## Lokal öffnen
 
