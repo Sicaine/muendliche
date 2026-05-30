@@ -491,22 +491,22 @@ const EXAM_DATA = {
         },
         {
           q: "Was sind Langwaffen und Kurzwaffen?",
-          a: "Langwaffen: Gewehre mit Lauflänge über 30 cm und Gesamtlänge über 60 cm (z.B. Büchsen, Flinten, Drilling).\nKurzwaffen: Pistolen und Revolver mit kürzeren Maßen.",
+          a: "Langwaffen (§ WaffG, Anlage 1): Schusswaffen mit einer Lauflänge über 30 cm ODER einer Gesamtlänge über 60 cm (z.B. Büchsen, Flinten, Drilling).\nKurzwaffen: alle anderen Schusswaffen, also Pistolen und Revolver.",
           ai: false
         },
         {
           q: "Was ist ein Drilling und woran erkennt man ihn?",
-          a: "Ein Drilling ist eine Jagdwaffe mit drei Läufen: zwei Flintenläufen (oben/seitlich) und einem Büchsenlauf (unten/mittig). Man erkennt ihn an den drei Läufen, dem Umschaltschieber für den Büchsenlauf und dem typischen Kippverschluss. Er ermöglicht sowohl Schrot- als auch Büchsenjagd mit einer Waffe.",
+          a: "Ein Drilling ist eine kombinierte Jagdwaffe mit drei Läufen: zwei Schrotläufe nebeneinander (oben) und einem Büchsenlauf darunter (mittig). Erkennungsmerkmale: drei Läufe, Umschalter (meist auf dem Kolbenhals) zum Aktivieren des Büchsenabzugs, Kippverschluss (Kipplaufwaffe). Er ermöglicht sowohl Schrot- als auch Kugeljagd mit einer Waffe.",
           ai: false
         },
         {
           q: "Was sind Signalstifte und was zeigen sie an?",
-          a: "Signalstifte sind kleine Metallstifte am Verschluss einer Waffe, die herausragen, wenn der Schlagbolzen gespannt ist. Sie ermöglichen eine sichere taktile Kontrolle des Spannzustands, auch ohne hinzuschauen.",
+          a: "Beim Drilling: Signalstifte sind kleine Metallstifte am Verschluss einer Waffe, die herausragen, wenn der Schlagbolzen gespannt ist. Bei der PPK zeigt es an ob eine Kugel im Patronenlager ist.",
           ai: false
         },
         {
           q: "Was ist ein Stecher? Welche Arten gibt es und wie steche ich ein/aus?",
-          a: "Ein Stecher reduziert den Abzugswiderstand für einen präzisen Schuss.\n- Rückstecher (Drilling): vorderen Abzug nach vorne drücken, dann löst der hintere mit minimalem Druck aus.\n- Doppelzüngelstecher (98er): Zügel vorwärts drücken.\n- Französischer Stecher: separater Stecher-Zügel.\nEntstechen: leer abdrücken (in sicherer Richtung) oder bei Kippläufen durch Öffnen.",
+          a: "Ein Stecher reduziert den Abzugswiderstand für einen präzisen Schuss.\n- Rückstecher (z.B. Mauser 98): einziger Abzug wird nach vorne gedrückt, dann löst er bei minimalem Druck aus.\n- Doppelzüngelstecher (zwei Abzüge): hinterer Abzug ist der Stecher – durch Antippen wird der vordere Abzug gestochen und löst dann mit minimalem Druck aus.\n- Französischer Stecher: ein Abzug, der durch Vorwärtsdrücken auf 'Stecher' umgeschaltet wird.\nEntstechen: in sicherer Richtung leer abdrücken; bei Kipplaufwaffen löst sich der Stecher beim Öffnen des Verschlusses.",
           ai: false
         },
         {
@@ -516,7 +516,7 @@ const EXAM_DATA = {
         },
         {
           q: "Was bedeutet die Kaliberangabe z.B. 7×65R oder 8×57IS?",
-          a: "Die erste Zahl bezeichnet den Geschossdurchmesser in mm (z.B. 7 mm).\nDie zweite Zahl bezeichnet die Hülsenlänge in mm (z.B. 65 mm).\nBuchstaben: R = Rand (für Kipplaufwaffen), S = Spitzgeschoss, IS = Einheitsgeschoss-Spitz.",
+          a: "Die erste Zahl bezeichnet den Geschossdurchmesser in mm (z.B. 7 mm).\nDie zweite Zahl bezeichnet die Hülsenlänge in mm (z.B. 65 mm).\nBuchstaben hinter der Zahl: R = Rand (Hülse mit Rand für Kipplaufwaffen). Beim 8×57 unterscheidet I (Infanterie, Bohrung 7,9 mm) von IS (Infanterie-Spitz, Bohrung 8,2 mm) – nicht verwechseln, IS-Munition darf NICHT in I-Läufen verschossen werden.",
           ai: false
         },
         {
@@ -546,7 +546,7 @@ const EXAM_DATA = {
         },
         {
           q: "Darf man aus einer Waffe ohne Lilienzeichen Stahlschrot verschießen?",
-          a: "Nein. Das Lilienzeichen (Nitrobeschusszeichen) bestätigt die Zulassung für Stahlschrot (verstärkte Beschussprüfung). Ohne dieses Zeichen darf nur Bleischrot verwendet werden, da Stahlschrot härtere Beanspruchung verursacht und die Waffe beschädigen könnte.",
+          a: "Nein. Das Lilienzeichen (Stahlschrot-Beschusszeichen, drei Lilien im Kranz) auf dem Lauf einer Flinte bestätigt die Zulassung zum Verschießen handelsüblicher Stahlschrotpatronen. Ohne dieses Zeichen darf nur Bleischrot (oder weiches Wismut/Zinn-Schrot) verwendet werden, da Stahlschrot härtere Beanspruchung auf Lauf und Choke verursacht und die Waffe beschädigen kann.",
           ai: false
         },
         {
@@ -566,13 +566,13 @@ const EXAM_DATA = {
         },
         {
           q: "Was ist der Unterschied zwischen Absehen 1 und Absehen 4?",
-          a: "Absehen 1: Fadenkreuz mit Zielstachel – der feine Punkt ist bei schlechtem Licht besser sichtbar.\nAbsehen 4: Mil-dot- oder Balkensystem mit eingebauter Entfernungsschätzung (z.B. Rehbock auf 100 m).",
+          a: "Absehen 1: feines Fadenkreuz, das das ganze Sehfeld durchzieht – sehr präzises Zielen, aber bei schlechtem Licht schwer zu erkennen. Eher für Scheibenschießen.\nAbsehen 4: drei dicke Balken (links, rechts, unten), die in der Mitte in ein feines Fadenkreuz übergehen – die Balken führen das Auge automatisch ins Zentrum, ideal für Dämmerung und Drückjagd. Klassisches Jagdabsehen.",
           ai: false
         },
         {
           q: "Wie viele Patronen darf ich auf der Jagd ins Magazin laden?",
-          a: "Bei Büchsen gilt in Bayern: 2 Patronen im Magazin + 1 im Patronenlager = 3 insgesamt. Bei Flinten auf Schalenwild: max. 2. Die genauen Regelungen können je nach Jagdart (Gesellschaftsjagd) und Landesrecht variieren.",
-          ai: true
+          a: "Bei halbautomatischen Langwaffen (Selbstladebüchsen, Selbstladeflinten) gilt: max. 2 Patronen im Magazin + 1 im Patronenlager = 3 insgesamt (§ 19 Abs. 1 Nr. 2 BJagdG). Bei Repetierbüchsen oder Kipplaufwaffen gibt es diese Begrenzung nicht – hier zählt nur die Magazinkapazität der Waffe.",
+          ai: false
         },
         {
           q: "Was sind wesentliche Teile einer Waffe? (am Beispiel Walther PPK)",
@@ -581,12 +581,12 @@ const EXAM_DATA = {
         },
         {
           q: "Was ist GEE (auf einer Munitionspackung)?",
-          a: "GEE steht für 'Gesamt-Einsatz-Energie' und bezeichnet die Auftreffenergie des Geschosses in Joule. Sie ist ein Maß für die Wirkung auf das Wild und relevant für die jagdliche Eignung (z.B. Mindestenergie für bestimmtes Schalenwild).",
-          ai: true
+          a: "GEE = Günstigste Einschieß-Entfernung (auch 'Optimale Einschieß-Entfernung'). Es ist die Entfernung (in Metern), auf die ein Gewehr eingeschossen werden sollte, damit das Geschoss innerhalb seiner praxisgerechten Schussdistanz nie mehr als ca. 4 cm über oder unter der Visierlinie verläuft (Halten 'Fleck' im Hauptzielbereich). Wert hängt von Kaliber/Laborierung ab und steht meist auf der Munitionspackung.",
+          ai: false
         },
         {
           q: "Wie sind Waffen zuhause aufzubewahren?",
-          a: "In einem Waffenschrank mindestens der Klasse 0 (bis 10 Langwaffen) oder Klasse 1. Schlüssel und Code dürfen nur dem Besitzer zugänglich sein. Munition kann getrennt oder im gleichen Schrank aufbewahrt werden.",
+          a: "In einem Waffenschrank, der mindestens dem Sicherheitsstandard nach §13 AWaffV entspricht – das ist heute Widerstandsgrad 0 (oder höher) nach DIN/EN 1143-1. Schlüssel und Zugangscodes dürfen nur dem Berechtigten zugänglich sein. Munition kann zusammen mit den Waffen im selben Behältnis aufbewahrt werden, in einem gesonderten Munitionsfach oder in einem eigenen Behältnis.",
           ai: false
         },
         {
@@ -624,8 +624,8 @@ const EXAM_DATA = {
           ai: false
         },
         {
-          q: "Was sind Bruchzeit und Schmalzeit beim Rehwild?",
-          a: "Brunft: Mitte Juli bis Mitte August (Hauptbrunft).\nSatzzeit: Mai/Juni (Kitz wird gesetzt).\nFegezeit: April–Juni (Bock verfegt Bast).\nAbwurf: Oktober–Dezember.",
+          q: "Was sind Brunft- und Setzzeit beim Rehwild?",
+          a: "Brunft: Mitte Juli bis Mitte August (Hauptbrunft); 'Nachbrunft' im November/Dezember bei nicht beschlagenen Geißen.\nSatzzeit: Mai/Juni (Kitz wird gesetzt; meist 1–2 Kitze).\nFegezeit: ab März (alte Böcke zuerst), Jährlinge fegen oft erst im Mai.\nKeine Abwurfzeit beim Rehbock im klassischen Sinne: das Geweih wird im Oktober/November (alte Böcke) bzw. November/Dezember (Jährlinge) abgeworfen und sofort wieder geschoben.",
           ai: false
         },
         {
@@ -769,7 +769,7 @@ const EXAM_DATA = {
         },
         {
           q: "Wann beginnt die Jagdzeit für den Rehbock?",
-          a: "Rehbock: 1. Mai bis 15. Oktober.\nSchmalreh und Schmalgeiß: 1. September bis 15. Januar.\nRickjagd (weibliches Rehwild): 1. Oktober bis 15. Januar.",
+          a: "In Bayern (BayAVBJG):\n- Rehbock: 1. Mai – 15. Oktober\n- Schmalreh (weibl. Rehkitz im 2. Lebensjahr): 1. Mai – 15. Januar\n- Ricke (führendes weibl. Rehwild) und Kitz: 1. September – 15. Januar",
           ai: false
         },
         {
@@ -804,7 +804,7 @@ const EXAM_DATA = {
         },
         {
           q: "Darf man einen Fuchs im Mai schießen?",
-          a: "Nein. Im Mai gilt der Elterntierschutz: Während der Aufzucht der Jungen dürfen führende Muttertiere nicht erlegt werden. Außerdem hat der Fuchs in Bayern vom 1. Februar bis 15. April Schonzeit (je nach Verordnung). Im Mai ist die Fuchsjagd daher in der Regel nicht gestattet.",
+          a: "In Bayern hat der Fuchs grundsätzlich keine eigene Schonzeit – er ist (Stand BayAVBJG) ganzjährig bejagbar. ABER: Es gilt der Elterntierschutz nach § 22 Abs. 4 BJagdG – führende Fähen, die Welpen säugen, dürfen nicht erlegt werden, bis die Welpen selbständig sind. Im Mai sind die Welpen meist noch in der Säugezeit, daher Vorsicht und sicheres Ansprechen der Fähe.",
           ai: false
         },
         {
@@ -819,7 +819,7 @@ const EXAM_DATA = {
         },
         {
           q: "Was ist eine Straftat in Bezug auf Abwurfstangen?",
-          a: "Das Mitnehmen von Abwurfstangen (natürlich abgeworfene Geweihe) ohne Erlaubnis ist eine Straftat nach §17a BJagdG (Aneignungsdelikt), da das Aneignungsrecht dem Jagdausübungsberechtigten zusteht.",
+          a: "Abwurfstangen (natürlich abgeworfene Geweihe) gehören zum Aneignungsrecht des Jagdausübungsberechtigten (§ 1 Abs. 5 BJagdG). Wer ohne dessen Einwilligung Abwurfstangen aufnimmt und mitnimmt, begeht Jagdwilderei nach § 292 StGB (Aneignen einer dem Jagdrecht unterliegenden Sache). Strafmaß: bis zu 5 Jahre Freiheitsstrafe oder Geldstrafe.",
           ai: false
         },
         {
@@ -883,7 +883,7 @@ const EXAM_DATA = {
         },
         {
           q: "Welche Pirschzeichen gibt es und was bedeuten sie?",
-          a: "Schweiß (Blut):\n- Hellrot, blasig = Lunge (Lungenstreifer oder Lunge getroffen)\n- Dunkelrot = Herz, Leber, Kammer\n- Grünlich/gelblich = Waidwundschuss (Pansen/Darm)\n- Klar = Niere/Gallenblase\nWeitere Zeichen: Wildbreitschweiß (Gewebesfetzen), Knochensplitter, Wollhaare, Mageninhalt.",
+          a: "Schweiß (Blut):\n- Hellrot, schaumig/blasig = Lungentreffer (sauerstoffreiches Blut)\n- Dunkelrot = Herz/Kammer/Leber\n- Grünlich/gelblich, mit Pansen-/Darminhalt = Waidwundschuss (Pansen/Darm)\n\nWeitere Pirschzeichen: Schnitthaare (kurze, abgeschnittene Haare am Anschuss), Knochensplitter, Wildbreitfetzen, Schweißspritzer (auf Bewuchs), Trittsiegel, Liegestellen.",
           ai: false
         },
         {
@@ -972,7 +972,7 @@ const EXAM_DATA = {
         },
         {
           q: "Was ist der Unterschied zwischen Feldleine und Schweißriemen?",
-          a: "Feldleine: lange dünne Leine (ca. 10–15 m) zur Kontrolle des Hundes bei der Feldsuche (Vorsuche).\nSchweißriemen: breiter, robuster Lederriemen (ca. 6 m) für die Schweißarbeit. Er ist 'aufgedockt' (zusammengerollt), damit er im Wald nicht hängt.",
+          a: "Feldleine: kurze, leichte Anleinleine (ca. 1–2 m), mit der der Hund bei Fuß geführt wird (Feldsuche/Anleinen am Stand).\nSchweißriemen: langer, breiter, robuster Lederriemen (mind. 6 m, oft 8–10 m) für die Schweißarbeit. Er ist 'aufgedockt' (zusammengelegt/ringförmig in der Hand), damit er beim Arbeiten an der Wundfährte im Wald nicht hängen bleibt; er wird kontrolliert nachgegeben.",
           ai: false
         },
         {
@@ -1007,7 +1007,7 @@ const EXAM_DATA = {
         },
         {
           q: "Was ist 'angewölft'?",
-          a: "Angewölft bedeutet, dass ein Hund an einen Wolfsrudel oder an Haustierherden gewöhnt wurde. Im jagdlichen Sinne bezeichnet es die Gewöhnung eines Jagdhundes an bestimmte Wildarten, damit er sie jagt oder apportiert, ohne sie zu beschädigen.",
+          a: "'Angewölft' bezeichnet die jagdliche Eignung/das Naturell, mit der ein junger Jagdhund bestimmte Anlagen mitbringt – etwa Spurlaut, Suchfreude, Wildschärfe, Apportierfreude –, die durch die Zucht ererbt sind und beim Jagen 'mitkommen' (Anlageprüfung). Verwandter Begriff: 'angeboren' im Gegensatz zu 'angelernt'. (Achtung: in der Literatur uneinheitlich verwendet – mit Fachliteratur abgleichen.)",
           ai: true
         },
         {
@@ -1136,7 +1136,7 @@ const EXAM_DATA = {
         },
         {
           q: "Was ist der Unterschied zwischen Ringelnatter und Kreuzotter?",
-          a: "Ringelnatter:\n- Ungiftig\n- Lebt am Wasser, schwimmt gut\n- Legt Eier (eiabilit)\n- Kennzeichen: gelb-orangener Halsfleck\n\nKreuzotter:\n- Giftig (häufigste Giftschlange Deutschlands)\n- Lebendgebärend (ovovivipar)\n- Kennzeichen: Zickzack-Muster auf dem Rücken",
+          a: "Ringelnatter:\n- Ungiftig\n- Lebt am Wasser, schwimmt gut\n- Eierlegend (ovipar)\n- Pupille rund\n- Kennzeichen: gelbliche Halbmond-/Halsflecken hinter dem Kopf\n\nKreuzotter:\n- Giftig (häufigste Giftschlange Deutschlands)\n- Lebendgebärend (ovovivipar)\n- Pupille senkrecht-schlitzförmig\n- Kennzeichen: dunkles Zickzack-Band auf dem Rücken",
           ai: false
         },
         {
@@ -1360,3 +1360,4 @@ init();
 </script>
 </body>
 </html>
+
