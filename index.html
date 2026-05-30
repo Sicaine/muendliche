@@ -501,12 +501,12 @@ const EXAM_DATA = {
         },
         {
           q: "Was sind Signalstifte und was zeigen sie an?",
-          a: "Beim Drilling: Signalstifte sind kleine Metallstifte am Verschluss einer Waffe, die herausragen, wenn der Schlagbolzen gespannt ist. Bei der PPK zeigt es an ob eine Kugel im Patronenlager ist.",
+          a: "Signalstifte zeigen den Lade- oder Spannzustand an:\n- Beim Drilling (Schlosshalter): Zeigen an, ob das jeweilige Schloss gespannt ist.\n- Bei der Walther PPK: Es ist ein Ladestift, der anzeigt, ob sich eine Patrone im Patronenlager befindet (er ragt dann hinten über dem Hahn heraus).",
           ai: false
         },
         {
           q: "Was ist ein Stecher? Welche Arten gibt es und wie steche ich ein/aus?",
-          a: "Ein Stecher reduziert den Abzugswiderstand für einen präzisen Schuss.\n- Rückstecher (z.B. Mauser 98): einziger Abzug wird nach vorne gedrückt, dann löst er bei minimalem Druck aus.\n- Doppelzüngelstecher (zwei Abzüge): hinterer Abzug ist der Stecher – durch Antippen wird der vordere Abzug gestochen und löst dann mit minimalem Druck aus.\n- Französischer Stecher: ein Abzug, der durch Vorwärtsdrücken auf 'Stecher' umgeschaltet wird.\nEntstechen: in sicherer Richtung leer abdrücken; bei Kipplaufwaffen löst sich der Stecher beim Öffnen des Verschlusses.",
+          a: "Ein Stecher reduziert den Abzugswiderstand für einen präzisen Schuss. Es gibt zwei Hauptarten:\n1. Französischer Stecher (Rückstecher): Ein Abzug, der zum Einstechen nach vorne gedrückt wird.\n2. Deutscher Stecher (Doppelzüngelstecher): Zwei Abzüge; der hintere wird zum Einstechen nach hinten gezogen, der vordere dient zum Auslösen.\nEntstechen: In sicherer Richtung die Waffe sichern und bei Kipplaufwaffen durch Öffnen des Verschlusses (bricht die Stecherrastung). Bei Repetierern: Sichern und vorsichtiges manuelles Entspannen oder durch Öffnen der Kammer.",
           ai: false
         },
         {
@@ -531,7 +531,7 @@ const EXAM_DATA = {
         },
         {
           q: "Was ist eine Schrotpatrone? Welche Kaliber gibt es und wie groß ist der Gefährdungsbereich?",
-          a: "Eine Schrotpatrone enthält viele kleine Bleikügelchen (Schrotkörner). Kaliber z.B. 12/70 (12 = Gauge-Angabe, 70 = Hülsenlänge in mm).\nGefährdungsbereich: Schrotstärke in mm × 100 = Meter (z.B. 3 mm → 300 m).",
+          a: "Eine Schrotpatrone enthält viele kleine Schrotkugeln (traditionell Blei, zunehmend Weicheisen/Stahl). \nKaliber: z.B. 12/70. '12' bedeutet, dass aus einem englischen Pfund Blei (453,6g) 12 gleich große Kugeln vom Laufdurchmesser gegossen werden können. '70' ist die Länge der abgeschossenen Hülse in mm.\nGefährdungsbereich: Schrotstärke in mm × 100 = Meter (Faustformel). Beispiel: 3 mm Schrot → 300 m Gefahrenbereich.",
           ai: false
         },
         {
@@ -546,7 +546,7 @@ const EXAM_DATA = {
         },
         {
           q: "Darf man aus einer Waffe ohne Lilienzeichen Stahlschrot verschießen?",
-          a: "Nein. Das Lilienzeichen (Stahlschrot-Beschusszeichen, drei Lilien im Kranz) auf dem Lauf einer Flinte bestätigt die Zulassung zum Verschießen handelsüblicher Stahlschrotpatronen. Ohne dieses Zeichen darf nur Bleischrot (oder weiches Wismut/Zinn-Schrot) verwendet werden, da Stahlschrot härtere Beanspruchung auf Lauf und Choke verursacht und die Waffe beschädigen kann.",
+          a: "Bedingt ja. Aus Flinten mit normalem Beschuss (ohne Lilie) darf Weicheisenschrot (Stahlschrot) bis zu einer Korngröße von 3,25 mm verschossen werden, sofern die Mündungsgeschwindigkeit V2,5 unter 400 m/s liegt (Standardpatrone). Höchstleistungspatronen (über 3,25 mm oder V2,5 > 400 m/s) erfordern zwingend den Stahlschrotbeschuss (Lilie) und einen verstärkten Choke.",
           ai: false
         },
         {
@@ -566,7 +566,7 @@ const EXAM_DATA = {
         },
         {
           q: "Was ist der Unterschied zwischen Absehen 1 und Absehen 4?",
-          a: "Absehen 1: feines Fadenkreuz, das das ganze Sehfeld durchzieht – sehr präzises Zielen, aber bei schlechtem Licht schwer zu erkennen. Eher für Scheibenschießen.\nAbsehen 4: drei dicke Balken (links, rechts, unten), die in der Mitte in ein feines Fadenkreuz übergehen – die Balken führen das Auge automatisch ins Zentrum, ideal für Dämmerung und Drückjagd. Klassisches Jagdabsehen.",
+          a: "Absehen 1: Besteht aus zwei horizontalen Balken und einem Zielstachel (Spitze in der Mitte). Gut für schnelle Zielerfassung, deckt aber nach oben wenig ab.\nAbsehen 4: Drei dicke Balken (links, rechts, unten) und ein feines Fadenkreuz in der Mitte. Die Balken führen das Auge ins Zentrum, das feine Kreuz ermöglicht präzises Schießen. Es ist das heute gebräuchlichste Jagdabsehen.",
           ai: false
         },
         {
@@ -669,8 +669,8 @@ const EXAM_DATA = {
           ai: false
         },
         {
-          q: "Wann ranzt der Dachs?",
-          a: "Der Dachs ranzt im Sommer (Juli–August), aber es gibt eine verzögerte Einnistung – die eigentliche Schwangerschaft beginnt erst im Winter. Geburt der Jungen: Januar–März.",
+          q: "Wann ranzt der Dachs und wann ist Jagdzeit?",
+          a: "Ranzzeit: Sommer (Juli–August), mit Eiruhe (verzögerte Einnistung).\nJagdzeit in Bayern:\n- Adult: 1. August – 31. Januar\n- Jungdachs: 16. April – 31. Januar\nGeburt der Jungen: Januar–März.",
           ai: false
         },
         {
@@ -769,12 +769,12 @@ const EXAM_DATA = {
         },
         {
           q: "Wann beginnt die Jagdzeit für den Rehbock?",
-          a: "In Bayern (BayAVBJG):\n- Rehbock: 1. Mai – 15. Oktober\n- Schmalreh (weibl. Rehkitz im 2. Lebensjahr): 1. Mai – 15. Januar\n- Ricke (führendes weibl. Rehwild) und Kitz: 1. September – 15. Januar",
+          a: "In Bayern (gemäß Reform 2026):\n- Rehbock: 16. April – 15. Oktober\n- Schmalreh: 16. April – 15. Januar\n- Geiß (Ricke) und Kitz: 1. September – 15. Januar\n(Hinweis: Der frühere Beginn am 16. April dient der effektiveren Bejagung vor Einsetzen der starken Vegetation.)",
           ai: false
         },
         {
           q: "Darf man einen gesunden starken Bock am 17. Oktober schießen?",
-          a: "Nein. Die Jagdzeit für den Rehbock endet am 15. Oktober. Ein Abschuss am 17. Oktober wäre ein Verstoß gegen die Schonzeit und damit strafbar.",
+          a: "Nein. Die Jagdzeit für den Rehbock endet am 15. Oktober. Ein Abschuss am 17. Oktober wäre ein Verstoß gegen die Schonzeit (außer bei behördlicher Ausnahmegenehmigung, z.B. zur Seuchenbekämpfung oder Waldschutz).",
           ai: false
         },
         {
@@ -804,7 +804,7 @@ const EXAM_DATA = {
         },
         {
           q: "Darf man einen Fuchs im Mai schießen?",
-          a: "In Bayern hat der Fuchs grundsätzlich keine eigene Schonzeit – er ist (Stand BayAVBJG) ganzjährig bejagbar. ABER: Es gilt der Elterntierschutz nach § 22 Abs. 4 BJagdG – führende Fähen, die Welpen säugen, dürfen nicht erlegt werden, bis die Welpen selbständig sind. Im Mai sind die Welpen meist noch in der Säugezeit, daher Vorsicht und sicheres Ansprechen der Fähe.",
+          a: "In Bayern ist der Fuchs ganzjährig bejagbar. Jedoch verbietet der Elterntierschutz (§ 22 Abs. 4 BJagdG) die Bejagung von Elterntieren während der Aufzuchtzeit der Jungen (Setz-/Brutzeit), solange diese auf die Versorgung angewiesen sind. Im Mai sind Fuchswelpen noch nicht selbstständig, daher dürfen führende Fähen nicht erlegt werden.",
           ai: false
         },
         {
