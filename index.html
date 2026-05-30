@@ -585,8 +585,8 @@ const EXAM_DATA = {
           ai: false
         },
         {
-          q: "Wie sind Waffen zuhause aufzubewahren?",
-          a: "In einem Waffenschrank, der mindestens dem Sicherheitsstandard nach §13 AWaffV entspricht – das ist heute Widerstandsgrad 0 (oder höher) nach DIN/EN 1143-1. Schlüssel und Zugangscodes dürfen nur dem Berechtigten zugänglich sein. Munition kann zusammen mit den Waffen im selben Behältnis aufbewahrt werden, in einem gesonderten Munitionsfach oder in einem eigenen Behältnis.",
+          q: "Wie sind Waffen zuhause aufzubewahren? Was gilt für Schlüssel?",
+          a: "In einem Waffenschrank (Widerstandsgrad 0 oder 1 nach DIN/EN 1143-1).\nSchlüsselaufbewahrung (Urteil 2023): Schlüssel müssen in einem Behältnis aufbewahrt werden, das dem Sicherheitsstandard der darin verwahrten Waffen entspricht (also ebenfalls Grad 0/1). Ein einfaches Verstecken oder ein minderwertiger Tresor für den Schlüssel ist unzulässig.",
           ai: false
         },
         {
@@ -764,7 +764,7 @@ const EXAM_DATA = {
         },
         {
           q: "Was sind sachliche Verbote (§19 BJagdG)? Nenne fünf.",
-          a: "1. Jagd auf Wild mit Schlingen, Fallen oder anderen unzulässigen Fanggeräten.\n2. Jagd bei Mondschein oder mit künstlichem Licht (mit Ausnahmen).\n3. Verwendung von Betäubungs- oder Giftstoffen.\n4. Jagd auf Wild aus Fahrzeugen heraus.\n5. Jagd auf Wild, das sich in Not befindet (z.B. Hochwasser).\n6. Vergiften von Ködern.\n7. Jagd in der Schonzeit.",
+          a: "1. Schießen auf Schalenwild mit Schrot, Posten, Bolzen oder Pfeilen.\n2. Verwendung von künstlichen Lichtquellen, Vorrichtungen zum Beleuchten oder Anstrahlen des Wildes (Ausnahme: Schwarzwild in Bayern mit Nachtsichttechnik).\n3. Jagd aus Kraftfahrzeugen oder Luftfahrzeugen heraus.\n4. Jagd auf Wild, das durch Hochwasser oder andere Notstände in seiner Bewegungsfreiheit eingeschränkt ist.\n5. Verwendung von Fanggeräten, die nicht unversehrt fangen oder nicht sofort töten (z.B. Schlingen).\n6. Vergiften von Ködern.",
           ai: false
         },
         {
@@ -779,7 +779,7 @@ const EXAM_DATA = {
         },
         {
           q: "Was ist der Abschussplan? Für welches Wild gilt er?",
-          a: "Der Abschussplan legt fest, wie viele Stücke welchen Alters und Geschlechts jährlich erlegt werden dürfen/sollen.\nGilt für: Schalenwild, AUSSER Schwarzwild (kein Abschussplan erforderlich).\nAufgestellt vom: Jagdausübungsberechtigten.\nGenehmigt von: Unterer Jagdbehörde (Landratsamt).",
+          a: "Der Abschussplan legt fest, wie viele Stücke welchen Alters und Geschlechts jährlich erlegt werden dürfen/sollen.\nGilt für: Schalenwild (Rot-, Dam-, Reh-, Gams-, Muffelwild), AUSSER Schwarzwild.\nBesonderheit Bayern 2026: Für Rehwild kann die Jagdgenossenschaft/der Eigenjagdbesitzer die 'Abschussplanfreiheit' beschließen (Anzeige bei Behörde genügt, kein behördlicher Plan mehr nötig).",
           ai: false
         },
         {
@@ -808,8 +808,8 @@ const EXAM_DATA = {
           ai: false
         },
         {
-          q: "Wer haftet für Wildschäden in der Landwirtschaft?",
-          a: "Der Jagdausübungsberechtigte (Pächter oder Eigentümer des Jagdreviers) haftet für Wildschäden durch jagdbares Wild (z.B. Schwarzwild, Rehwild) in angrenzenden Kulturen.",
+          q: "Wer haftet für Wildschäden in der Landwirtschaft? Für welches Wild?",
+          a: "Primär haftet die Jagdgenossenschaft, die die Haftung meist per Vertrag auf den Pächter abwälzt.\nErsatzpflichtig sind nur Schäden durch: Schalenwild, Wildkaninchen oder Fasane. Schäden durch Füchse, Dachse oder Greifvögel werden nicht ersetzt.",
           ai: false
         },
         {
@@ -834,7 +834,7 @@ const EXAM_DATA = {
         },
         {
           q: "Besonderheiten bei der Bejagung von Schwarzwild?",
-          a: "Kein Abschussplan erforderlich.\nKann ganzjährig bejagt werden (Frischlinge immer, Überläufer und Adulte bei Schäden und Seuchen).\nNachts jagdbar (mit Ausnahmen und Genehmigung).\nPflicht zur Trichinenschau.\nBei ASP-Verdacht: Veterinäramt informieren.",
+          a: "Kein Abschussplan erforderlich, ganzjährig bejagbar (außer führende Bachen).\nNachtjagd: In Bayern ist die Verwendung von Nachtsichtvorsatz- und Aufsatzgeräten (Dual-Use) für die Schwarzwildbejagung erlaubt (Sicherheitsaspekt: besseres Ansprechen).\nPflicht zur Trichinenschau.\nBesonderheit: 'Schwarzwildprämie' (Aufwandsentschädigung) in Bayern zur Reduktion der Bestände.",
           ai: false
         }
       ]
@@ -928,7 +928,7 @@ const EXAM_DATA = {
         },
         {
           q: "Was ist die Trichinenschau und wie viel Material wird entnommen?",
-          a: "Die Trichinenschau ist eine Pflichtuntersuchung bei Schwarzwild (und anderen Allesfressern wie Dachs, Bär) auf Trichinella spiralis.\nMaterial: 2 × 20 g = mindestens 40 g Fleisch, entnommen aus den Zwerchfellpfeilern (beim Aufbrechen stehen lassen!).\nUntersuchung im Labor oder beim Veterinäramt. Erst bei negativem Befund darf das Fleisch verwertet werden.",
+          a: "Pflichtuntersuchung bei Schwarzwild und Dachs auf Trichinen (Trichinella spiralis).\nMaterial in Bayern: Ca. 60 g Muskelfleisch (etwa hühnereigroß). Entnahme vorrangig aus Zwerchfellpfeiler oder Vorderlauf-Muskulatur (Antebrachium).\nUntersuchung: Per Verdauungsmethode im Labor. Das Wildbret ist bis zum negativen Ergebnis gesperrt.",
           ai: false
         },
         {
